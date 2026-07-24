@@ -3,6 +3,8 @@
 A minimalist, vector-first Go board for composing positions and studying
 variations.
 
+[Open Kipu Study](https://kipu-study.vercel.app/)
+
 Kipu Study turns a printed game record or teaching shape into an interactive
 board. Set up any position freely, then switch to simulation mode to play
 numbered moves with captures and alternating turns.
@@ -100,6 +102,19 @@ Run the rules suite and create a production build with:
 npm test
 npm run build
 ```
+
+## Deployment
+
+The production application is available at
+[kipu-study.vercel.app](https://kipu-study.vercel.app/).
+
+The site is public: anyone with the URL can use it without a Vercel account or
+an invitation. Sharing the application URL does not grant access to the Vercel
+project or its settings.
+
+Vercel uses the Vite preset, runs `npm run build`, and serves the generated
+`dist/` directory. The application currently requires no deployment
+environment variables.
 
 ## Current Rules Scope
 
