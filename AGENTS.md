@@ -4,9 +4,9 @@ These instructions apply to the entire repository.
 
 ## Product
 
-Kipu is a minimalist web application for composing Go positions and studying
-numbered variations. Its visual target is a printed black-and-white Kipu:
-quiet, precise, diagram-first, and useful for repeated teaching work.
+Kipu Study is a minimalist web application for composing Go positions and
+studying numbered variations. Its visual target is a printed black-and-white
+Kipu: quiet, precise, diagram-first, and useful for repeated teaching work.
 
 Read the implementation before changing behavior. When documentation and code
 disagree, treat the code as current behavior and update the documentation with

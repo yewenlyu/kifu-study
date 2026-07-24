@@ -1,19 +1,19 @@
-# Kipu
+# Kipu Study
 
 A minimalist, vector-first Go board for composing positions and studying
 variations.
 
-Kipu turns a printed game record or teaching shape into an interactive board.
-Set up any position freely, then switch to simulation mode to play numbered
-moves with captures and alternating turns.
+Kipu Study turns a printed game record or teaching shape into an interactive
+board. Set up any position freely, then switch to simulation mode to play
+numbered moves with captures and alternating turns.
 
-![Kipu recreating a numbered Go position](docs/images/kipu-desktop.png)
+![Kipu Study showing a zoomed 19 by 19 numbered Go position](docs/images/kipu-desktop.png)
 
-## Why Kipu
+## Why Kipu Study
 
 Traditional Kipu diagrams are compact and expressive, but they are static.
-Kipu keeps that quiet black-and-white visual language while making the position
-editable, replayable, and easier to use while learning or teaching.
+Kipu Study keeps that quiet black-and-white visual language while making the
+position editable, replayable, and easier to use while learning or teaching.
 
 <p align="center">
   <img
@@ -62,8 +62,8 @@ editable, replayable, and easier to use while learning or teaching.
 1. Build the starting shape in Setup mode.
 2. Switch to **Simulation** mode.
 3. Choose whether Black or White moves first.
-4. Place moves normally. Kipu numbers each move, alternates colors, and removes
-   captured groups.
+4. Place moves normally. Kipu Study numbers each move, alternates colors, and
+   removes captured groups.
 5. Use undo and redo to compare branches or revisit a teaching point.
 
 ## Shortcuts
@@ -85,7 +85,7 @@ inside the application.
 
 ## Quick Start
 
-Kipu currently requires Node.js 22 or newer.
+Kipu Study currently requires Node.js 22 or newer.
 
 ```sh
 npm install
@@ -121,7 +121,7 @@ Not implemented yet:
 
 ## Architecture
 
-Kipu is a client-side React and TypeScript application built with Vite.
+Kipu Study is a client-side React and TypeScript application built with Vite.
 
 ```text
 src/

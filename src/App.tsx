@@ -869,7 +869,7 @@ export default function App() {
           <span />
         </div>
         <div>
-          <h1>Kipu</h1>
+          <h1>Kipu Study</h1>
           <p>Go study board</p>
         </div>
       </header>
@@ -982,7 +982,7 @@ export default function App() {
         </aside>
 
         <main className="board-area">
-          <section className="board-frame" aria-label="Kipu board">
+          <section className="board-frame" aria-label="Kipu Study board">
             <div className="board-toolbar">
               <div className="turn-status" aria-live="polite">
                 {mode === "setup" ? (
