@@ -989,9 +989,8 @@ export default function App() {
       return;
     }
 
-    setSelectedPoint(null);
+    handleModeChange("setup");
     commit(newSnapshot(size, firstColor));
-    setNotice("");
   };
 
   const zoomIndex = ZOOM_LEVELS.indexOf(

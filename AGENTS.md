@@ -85,7 +85,7 @@ in `src/go.ts` and covering them in `src/go.test.ts`.
 - `S` toggles stone color, or the first player before simulation begins.
 - `T` cycles Stone, Triangle, and Circle tools.
 - `B` cycles 9x9, 13x13, and 19x19 boards.
-- `C` clears the board.
+- Clearing the board, including with `C`, switches to Setup mode.
 - Delete or Backspace removes a selected setup stone.
 - Escape clears the current stone selection.
 - Keep shortcuts documented in the README, but do not add visible shortcut

@@ -46,6 +46,7 @@ position editable, replayable, and easier to use while learning or teaching.
 - **Right-drag panning** moves a zoomed board when it is larger than the
   viewport.
 - **Undo and redo** cover placement, marks, moves, captures, and board clearing.
+  Clearing the board returns the application to Setup mode.
 - **Responsive controls** keep the complete workflow available on desktop and
   mobile.
 - **In-app shortcut help** is available from the question mark button in the
@@ -84,7 +85,7 @@ inside the application.
 | Toggle stone color / first move | `S` | `S` |
 | Cycle Stone / Triangle / Circle tool | `T` | `T` |
 | Cycle 9x9 / 13x13 / 19x19 board | `B` | `B` |
-| Clear the board | `C` | `C` |
+| Clear the board and return to Setup | `C` | `C` |
 | Remove selected setup stone | `Delete` / `Backspace` | `Delete` / `Backspace` |
 | Deselect the current stone | `Escape` | `Escape` |
 | Undo | `Command + Z` | `Ctrl + Z` |
