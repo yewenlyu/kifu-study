@@ -138,6 +138,7 @@ export function GoBoard({
                     ? EDGE_GRID_STROKE_WIDTH
                     : GRID_STROKE_WIDTH
                 }
+                strokeLinecap={isEdge ? "square" : undefined}
               />
               <line
                 x1={position}
@@ -149,6 +150,7 @@ export function GoBoard({
                     ? EDGE_GRID_STROKE_WIDTH
                     : GRID_STROKE_WIDTH
                 }
+                strokeLinecap={isEdge ? "square" : undefined}
               />
             </g>
           );

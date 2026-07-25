@@ -31,6 +31,20 @@ describe("board rendering", () => {
     );
   });
 
+  it("joins all four outer grid corners", () => {
+    renderApp();
+    const edgeLines = Array.from(
+      boardElement().querySelectorAll(".grid-lines line"),
+    ).filter((line) => line.getAttribute("stroke-width") === "2.8");
+
+    expect(edgeLines).toHaveLength(4);
+    expect(
+      edgeLines.every(
+        (line) => line.getAttribute("stroke-linecap") === "square",
+      ),
+    ).toBe(true);
+  });
+
   it("renders all supported board sizes with their correct star points", () => {
     renderApp();
 
