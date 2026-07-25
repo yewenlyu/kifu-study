@@ -70,6 +70,90 @@ describe("board rendering", () => {
     );
   });
 
+  it("keeps coordinates hidden by default and shows conventional labels when requested", () => {
+    renderApp();
+    const board = boardElement();
+    const toggle = screen.getByRole("button", { name: "Show coordinates" });
+
+    expect(board.querySelector(".board-coordinates")).toBeNull();
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+
+    fireEvent.click(toggle);
+
+    const topLabels = Array.from(
+      board.querySelectorAll('[data-coordinate-edge="top"]'),
+      (label) => label.textContent,
+    );
+    const leftLabels = Array.from(
+      board.querySelectorAll('[data-coordinate-edge="left"]'),
+      (label) => label.textContent,
+    );
+    expect(topLabels).toEqual([
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+    ]);
+    expect(leftLabels).toEqual([
+      "19",
+      "18",
+      "17",
+      "16",
+      "15",
+      "14",
+      "13",
+      "12",
+      "11",
+      "10",
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1",
+    ]);
+    expect(
+      board.querySelectorAll('[data-coordinate-edge="bottom"]'),
+    ).toHaveLength(19);
+    expect(
+      board.querySelectorAll('[data-coordinate-edge="right"]'),
+    ).toHaveLength(19);
+    expect(
+      screen.getByRole("button", { name: "Hide coordinates" }).getAttribute(
+        "aria-pressed",
+      ),
+    ).toBe("true");
+    const [viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight] = board
+      .getAttribute("viewBox")!
+      .split(" ")
+      .map(Number);
+    expect(viewBoxX).toBeLessThan(0);
+    expect(viewBoxY).toBeLessThan(0);
+    expect(viewBoxWidth).toBeGreaterThan(CANVAS_SIZE);
+    expect(viewBoxHeight).toBeGreaterThan(CANVAS_SIZE);
+
+    placeSetupStone({ x: 0, y: 0 });
+    expect(stoneAt({ x: 0, y: 0 })?.dataset.stone).toBe("black");
+  });
+
   it("keeps stones tangent and white outlines equal to interior grid lines", () => {
     renderApp();
     fireEvent.click(screen.getByRole("button", { name: "White" }));

@@ -45,6 +45,7 @@ interface SetupInteractionOptions {
   mode: Mode;
   tool: Tool;
   selectedColor: StoneColor;
+  canvasGutter: number;
   onCommit: (points: Point[], color: StoneColor) => void;
 }
 
@@ -70,6 +71,7 @@ export function useSetupInteraction({
   mode,
   tool,
   selectedColor,
+  canvasGutter,
   onCommit,
 }: SetupInteractionOptions) {
   const [hovered, setHovered] = useState<Point | null>(null);
@@ -90,6 +92,7 @@ export function useSetupInteraction({
       event.currentTarget.getBoundingClientRect(),
       size,
       step,
+      canvasGutter,
     );
 
   const handlePointerDown = (

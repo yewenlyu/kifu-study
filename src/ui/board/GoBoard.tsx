@@ -12,6 +12,7 @@ import type {
 } from "../../application/study-session";
 import {
   BOARD_CANVAS_SIZE,
+  COORDINATE_GUTTER,
   BOARD_PADDING,
   EDGE_GRID_STROKE_WIDTH,
   GRID_STROKE_WIDTH,
@@ -30,6 +31,7 @@ interface GoBoardProps {
   selectedColor: StoneColor;
   nextColor: StoneColor;
   zoom: number;
+  showCoordinates: boolean;
   onPointClick: (point: Point) => void;
   onPointClear: (point: Point) => void;
   onSetupStoneDragCommit: (
@@ -46,6 +48,7 @@ export function GoBoard({
   selectedColor,
   nextColor,
   zoom,
+  showCoordinates,
   onPointClick,
   onPointClear,
   onSetupStoneDragCommit,
@@ -65,10 +68,14 @@ export function GoBoard({
     mode,
     tool,
     selectedColor,
+    canvasGutter: showCoordinates ? COORDINATE_GUTTER : 0,
     onCommit: onSetupStoneDragCommit,
   });
   const coordinate = (index: number) => boardCoordinate(index, step);
   const previewColor = mode === "setup" ? selectedColor : nextColor;
+  const canvasGutter = showCoordinates ? COORDINATE_GUTTER : 0;
+  const viewBoxSize = BOARD_CANVAS_SIZE + canvasGutter * 2;
+  const columnLabels = "ABCDEFGHJKLMNOPQRST".slice(0, size);
 
   const renderMark = (
     mark: Mark,
@@ -107,7 +114,7 @@ export function GoBoard({
         width: `${zoom}%`,
         maxWidth: `${(820 * zoom) / 100}px`,
       }}
-      viewBox={`0 0 ${BOARD_CANVAS_SIZE} ${BOARD_CANVAS_SIZE}`}
+      viewBox={`${-canvasGutter} ${-canvasGutter} ${viewBoxSize} ${viewBoxSize}`}
       role="img"
       aria-label={`${size} by ${size} Go board`}
       data-board-size={size}
@@ -117,10 +124,68 @@ export function GoBoard({
       {...pointerHandlers}
     >
       <rect
-        width={BOARD_CANVAS_SIZE}
-        height={BOARD_CANVAS_SIZE}
+        x={-canvasGutter}
+        y={-canvasGutter}
+        width={viewBoxSize}
+        height={viewBoxSize}
         fill="#ffffff"
       />
+
+      {showCoordinates && (
+        <g className="board-coordinates" aria-hidden="true">
+          {Array.from(columnLabels, (label, index) => {
+            const position = coordinate(index);
+            return (
+              <g key={label}>
+                <text
+                  x={position}
+                  y={-COORDINATE_GUTTER / 2}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  data-coordinate-edge="top"
+                >
+                  {label}
+                </text>
+                <text
+                  x={position}
+                  y={BOARD_CANVAS_SIZE + COORDINATE_GUTTER / 2}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  data-coordinate-edge="bottom"
+                >
+                  {label}
+                </text>
+              </g>
+            );
+          })}
+          {Array.from({ length: size }, (_, index) => {
+            const label = size - index;
+            const position = coordinate(index);
+            return (
+              <g key={label}>
+                <text
+                  x={-COORDINATE_GUTTER / 2}
+                  y={position}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  data-coordinate-edge="left"
+                >
+                  {label}
+                </text>
+                <text
+                  x={BOARD_CANVAS_SIZE + COORDINATE_GUTTER / 2}
+                  y={position}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  data-coordinate-edge="right"
+                >
+                  {label}
+                </text>
+              </g>
+            );
+          })}
+        </g>
+      )}
 
       <g className="grid-lines" aria-hidden="true">
         {Array.from({ length: size }, (_, index) => {

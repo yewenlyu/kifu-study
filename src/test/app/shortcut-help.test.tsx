@@ -11,7 +11,7 @@ describe("shortcut help", () => {
 
     fireEvent.click(trigger);
     const dialog = screen.getByRole("dialog", { name: "Keyboard shortcuts" });
-    expect(within(dialog).getAllByRole("term")).toHaveLength(9);
+    expect(within(dialog).getAllByRole("term")).toHaveLength(10);
     const modeShortcut = within(dialog)
       .getByText("Toggle mode")
       .closest<HTMLElement>(".shortcut-help-row")!;
@@ -23,6 +23,12 @@ describe("shortcut help", () => {
     ).toBeTruthy();
     expect(
       within(stoneShortcut).getByText("X", { selector: "kbd" }),
+    ).toBeTruthy();
+    const coordinateShortcut = within(dialog)
+      .getByText("Toggle coordinates")
+      .closest<HTMLElement>(".shortcut-help-row")!;
+    expect(
+      within(coordinateShortcut).getByText("N", { selector: "kbd" }),
     ).toBeTruthy();
     expect(within(dialog).getByText("Right-click")).toBeTruthy();
     expect(within(dialog).getByText("Middle-drag")).toBeTruthy();

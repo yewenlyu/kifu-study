@@ -43,6 +43,8 @@ position editable, replayable, and easier to use while learning or teaching.
 - **Diagram marks** add triangles or circles with contrast-aware colors on
   black stones, white stones, or empty intersections.
 - **Three board sizes** support 9x9, 13x13, and 19x19 study.
+- **Optional coordinates** add conventional Go column letters and row numbers
+  around the board while keeping the default diagram clean.
 - **SVG rendering** keeps the board, stones, grid, and labels sharp at every
   zoom level.
 - **Middle-button panning** moves a zoomed board when it is larger than the
@@ -91,6 +93,7 @@ bottom-left corner for the complete reference, including pointer gestures.
 | Toggle stone color / first move | `X` | `X` |
 | Cycle Stone / Triangle / Circle tool | `T` | `T` |
 | Cycle 9x9 / 13x13 / 19x19 board | `B` | `B` |
+| Toggle board coordinates | `N` | `N` |
 | Clear the board and return to Setup | `C` | `C` |
 | Clear setup point / simulation label | Right-click | Right-click |
 | Undo | `U` | `U` |

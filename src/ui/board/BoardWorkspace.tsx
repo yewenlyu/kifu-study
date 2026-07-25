@@ -1,4 +1,5 @@
 import {
+  Hash,
   Redo2,
   RotateCcw,
   Trash2,
@@ -23,7 +24,9 @@ export const ZOOM_LEVELS = [80, 100, 125, 160] as const;
 interface BoardWorkspaceProps {
   session: StudySession;
   zoom: number;
+  showCoordinates: boolean;
   onZoomChange: (zoom: number) => void;
+  onCoordinatesToggle: () => void;
   onUndo: () => void;
   onRedo: () => void;
   onClear: () => void;
@@ -38,7 +41,9 @@ interface BoardWorkspaceProps {
 export function BoardWorkspace({
   session,
   zoom,
+  showCoordinates,
   onZoomChange,
+  onCoordinatesToggle,
   onUndo,
   onRedo,
   onClear,
@@ -156,6 +161,24 @@ export function BoardWorkspace({
 
             <button
               type="button"
+              className="icon-button shortcut-action coordinate-toggle"
+              aria-label={
+                showCoordinates ? "Hide coordinates" : "Show coordinates"
+              }
+              aria-pressed={showCoordinates}
+              title={
+                showCoordinates ? "Hide coordinates" : "Show coordinates"
+              }
+              onClick={onCoordinatesToggle}
+            >
+              <Hash size={17} />
+              <kbd className="shortcut-badge" aria-hidden="true">
+                N
+              </kbd>
+            </button>
+
+            <button
+              type="button"
               className="icon-button shortcut-action"
               aria-label="Clear board"
               title="Clear board"
@@ -182,6 +205,7 @@ export function BoardWorkspace({
             selectedColor={selectedColor}
             nextColor={present.nextColor}
             zoom={zoom}
+            showCoordinates={showCoordinates}
             onPointClick={onPointClick}
             onPointClear={onPointClear}
             onSetupStoneDragCommit={onSetupStoneDragCommit}

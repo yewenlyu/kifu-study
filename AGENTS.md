@@ -208,6 +208,9 @@ Maintain strict separation of concerns across test layers:
 ### Board And Labels
 
 - Board sizes are 9x9, 13x13, and 19x19.
+- Board coordinates are hidden by default. `N` toggles balanced edge labels
+  using Go columns `A` through `T` without `I` and rows numbered from the
+  bottom.
 - Stones are tangent: a stone's outer diameter equals one grid spacing.
 - White stone outlines use the same stroke weight as interior grid lines.
 - Triangle and circle marks must maintain visible contrast on black stones,
@@ -226,6 +229,7 @@ Maintain strict separation of concerns across test layers:
 - `X` toggles stone color, or the first player before simulation begins.
 - `T` cycles Stone, Triangle, and Circle tools.
 - `B` cycles 9x9, 13x13, and 19x19 boards.
+- `N` toggles board coordinates.
 - Clearing the board, including with `C`, switches to Setup mode.
 - Keep shortcuts documented in the README. Show compact, always-visible key
   badges beside the controls for `S`, `X`, `T`, and `B`; reveal the `U`, `R`,

@@ -22,6 +22,7 @@ describe("shortcut cues", () => {
     for (const [name, key] of [
       ["Undo", "U"],
       ["Redo", "R"],
+      ["Show coordinates", "N"],
       ["Clear board", "C"],
     ] as const) {
       const button = screen.getByRole("button", { name });

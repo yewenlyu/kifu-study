@@ -25,10 +25,26 @@ test("keeps every control in two columns without page overflow", async ({
     await expect(badge).toBeVisible();
   }
   const toolbarBadges = page.locator(".shortcut-action .shortcut-badge");
-  await expect(toolbarBadges).toHaveText(["U", "R", "C"]);
+  await expect(toolbarBadges).toHaveText(["U", "R", "N", "C"]);
   for (const badge of await toolbarBadges.all()) {
     await expect(badge).toBeHidden();
   }
+
+  await page.keyboard.press("n");
+  const coordinateHeight = await page.evaluate(
+    () =>
+      document
+        .querySelector('[data-coordinate-edge="top"]')!
+        .getBoundingClientRect().height,
+  );
+  expect(coordinateHeight).toBeGreaterThanOrEqual(8);
+  const pageWidthWithCoordinates = await page.evaluate(() => ({
+    client: document.documentElement.clientWidth,
+    scroll: document.documentElement.scrollWidth,
+  }));
+  expect(pageWidthWithCoordinates.scroll).toBeLessThanOrEqual(
+    pageWidthWithCoordinates.client,
+  );
 
   const help = page.getByRole("button", { name: "Keyboard shortcuts" });
   await expect(help).toBeInViewport();
@@ -40,5 +56,5 @@ test("keeps every control in two columns without page overflow", async ({
   await help.click();
   const dialog = page.getByRole("dialog", { name: "Keyboard shortcuts" });
   await expect(dialog).toBeInViewport();
-  await expect(dialog.getByRole("term")).toHaveCount(9);
+  await expect(dialog.getByRole("term")).toHaveCount(10);
 });

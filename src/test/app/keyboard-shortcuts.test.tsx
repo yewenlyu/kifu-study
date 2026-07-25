@@ -68,6 +68,18 @@ describe("keyboard shortcuts", () => {
     ).toBe(true);
   });
 
+  it("toggles board coordinates with N", () => {
+    renderApp();
+
+    expect(boardElement().querySelector(".board-coordinates")).toBeNull();
+
+    fireEvent.keyDown(window, { key: "n" });
+    expect(boardElement().querySelector(".board-coordinates")).toBeTruthy();
+
+    fireEvent.keyDown(window, { key: "N" });
+    expect(boardElement().querySelector(".board-coordinates")).toBeNull();
+  });
+
   it("does not remove setup stones with Delete or Backspace", () => {
     renderApp();
     placeSetupStone({ x: 2, y: 2 });

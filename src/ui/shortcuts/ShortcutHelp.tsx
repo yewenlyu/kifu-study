@@ -6,6 +6,7 @@ const SHORTCUTS = [
   { action: "Toggle stone", keys: "X" },
   { action: "Cycle tool", keys: "T" },
   { action: "Cycle board", keys: "B" },
+  { action: "Toggle coordinates", keys: "N" },
   { action: "Clear board", keys: "C" },
   { action: "Clear point / label", keys: "Right-click" },
   { action: "Undo", keys: "U" },
