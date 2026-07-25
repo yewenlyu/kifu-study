@@ -8,7 +8,7 @@
     "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
     "test": "npm run test:coverage && npm run test:e2e",
     "test:unit": "vitest run --project unit",
-    "test:architecture": "vitest run --project unit src/test/architecture.test.ts",
+    "test:architecture": "vitest run --project architecture",
     "test:component": "vitest run --project component",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",

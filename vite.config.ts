@@ -13,8 +13,15 @@ export default defineConfig({
           include: [
             "src/domain/**/*.test.ts",
             "src/application/**/*.test.ts",
-            "src/test/architecture.test.ts",
           ],
+          environment: "node",
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "architecture",
+          include: ["src/test/architecture.test.ts"],
           environment: "node",
         },
       },

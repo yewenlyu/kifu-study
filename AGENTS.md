@@ -46,10 +46,10 @@ before handing off a code change.
 - `src/test/app/` contains single-concern component workflow suites;
   `src/test/app/support/` separates rendering, controls, and board interactions.
 - `src/styles/` separates global, board, control, and shortcut styling.
-- `src/domain/go/go.test.ts` covers board utilities, legality, captures, and
-  setup paths.
-- `src/application/study-session/reducer.test.ts` covers application state
-  transitions and history boundaries.
+- `src/domain/go/*.test.ts` colocates board model, rules, setup, and path tests
+  with their owning modules.
+- `src/application/study-session/*.test.ts` separates model defaults, generic
+  history behavior, and application transitions by owner.
 - `src/test/architecture.test.ts` enforces inward dependency direction and
   rejects source cycles.
 - `e2e/*.spec.ts` separates browser-only drag, panning, and responsive layout
@@ -136,8 +136,8 @@ an inward type merely to avoid a valid dependency.
 - `npm run test:coverage` measures every production TypeScript module in the
   four layers and enforces all thresholds per file. Do not exclude a module or
   add passthrough code merely to satisfy coverage.
-- Keep Go rules independent from React and cover pure rule changes in
-  `src/domain/go/go.test.ts`.
+- Keep Go rules independent from React and cover pure changes in the
+  corresponding module-owned test under `src/domain/go/`.
 
 ## Test Requirements
 
@@ -161,10 +161,11 @@ automated tests. A feature change is incomplete unless:
 
 Maintain strict separation of concerns across test layers:
 
-- Pure Go rules, board transformations, and path generation belong in
-  `src/domain/go/go.test.ts` and run in the Node-based `unit` Vitest project.
-- Pure study-session transitions and history behavior belong in
-  `src/application/study-session/reducer.test.ts`.
+- Pure Go rules, board transformations, setup placement, and path generation
+  belong in the corresponding module-owned test under `src/domain/go/` and run
+  in the Node-based `unit` Vitest project.
+- Pure study-session model, history, and reducer behavior belong in the
+  corresponding module-owned test under `src/application/study-session/`.
 - React state, history, controls, keyboard behavior, and deterministic SVG
   output belong in a single-concern suite under `src/test/app/` and run in the
   jsdom-based `component` Vitest project.
@@ -175,8 +176,9 @@ Maintain strict separation of concerns across test layers:
   assertions must remain in the owning spec.
 - Do not add unrelated scenarios to an existing suite for convenience. Create
   or choose the suite whose single responsibility matches the requirement.
-- Keep `npm run test:unit`, `npm run test:component`,
-  `npm run test:coverage`, and `npm run test:e2e` independently runnable.
+- Keep `npm run test:unit`, `npm run test:architecture`,
+  `npm run test:component`, `npm run test:coverage`, and `npm run test:e2e`
+  independently runnable.
 
 ## Current Behavior Contracts
 

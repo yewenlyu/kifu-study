@@ -18,24 +18,6 @@ function apply(
 }
 
 describe("studySessionReducer", () => {
-  it("creates the initial setup session", () => {
-    const session = createStudySession();
-
-    expect(session).toMatchObject({
-      size: 19,
-      mode: "setup",
-      selectedColor: "black",
-      firstColor: "black",
-      tool: "stone",
-      selectedPoint: null,
-      notice: "",
-    });
-    expect(session.history.past).toEqual([]);
-    expect(session.history.future).toEqual([]);
-    expect(session.history.present.board).toHaveLength(19);
-    expect(isSimulationStarted(session)).toBe(false);
-  });
-
   it("commits setup batches atomically and navigates branched history", () => {
     const placed = apply(createStudySession(), {
       type: "setup-stones-placed",

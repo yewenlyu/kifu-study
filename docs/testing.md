@@ -14,8 +14,9 @@ npm run build
 
 Focused commands keep each concern independent during development:
 
-- `npm run test:unit` runs domain, application, and architecture tests in Node.
-- `npm run test:architecture` checks dependency direction and source cycles.
+- `npm run test:unit` runs module-owned domain and application tests in Node.
+- `npm run test:architecture` runs the separate dependency-direction and source
+  cycle project in Node.
 - `npm run test:component` runs the Testing Library project in jsdom.
 - `npm run test:watch` watches all Vitest suites.
 
@@ -47,23 +48,23 @@ dependency cycles.
 
 | Area | Product contract | Automated coverage |
 | --- | --- | --- |
-| Setup | Place black and white freely without captures or self-capture | `domain/go/go.test.ts`: setup placement; `setup-mode.test.tsx` |
-| Setup | Preview and commit consecutive orthogonal drags with turns | `domain/go/go.test.ts`: path generation; `setup-mode.test.tsx`; `setup-drag.spec.ts` |
+| Setup | Place black and white freely without captures or self-capture | `domain/go/setup.test.ts`; `setup-mode.test.tsx` |
+| Setup | Preview and commit consecutive orthogonal drags with turns | `domain/go/path.test.ts`; `setup-mode.test.tsx`; `setup-drag.spec.ts` |
 | Setup | Cancel a drag that starts on or crosses an occupied point | `setup-mode.test.tsx` |
 | Setup | Select an occupied stone with a stationary click | `setup-mode.test.tsx` |
-| Setup | Delete or Backspace removes the selected stone and mark through history | `domain/go/go.test.ts`: board content editing; `application/study-session/reducer.test.ts`; `setup-mode.test.tsx`; `keyboard-shortcuts.test.tsx` |
+| Setup | Delete or Backspace removes the selected stone and mark through history | `domain/go/model.test.ts`; `application/study-session/reducer.test.ts`; `setup-mode.test.tsx`; `keyboard-shortcuts.test.tsx` |
 | Setup | Stationary right-click does not edit the board | `panning.test.tsx` |
 | Simulation | Choose the first player before move one and lock it afterward | `simulation-mode.test.tsx` |
-| Simulation | Alternate colors and retain move numbers on live stones | `domain/go/go.test.ts`: `playMove`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx`, including move 100 |
-| Simulation | Capture complete single, connected, and adjacent groups | `domain/go/go.test.ts`: `playMove`; `simulation-mode.test.tsx` |
-| Simulation | Reject occupied moves and self-capture without advancing history | `domain/go/go.test.ts`: `playMove`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx` |
-| Simulation | Clear captured stones' move numbers and update capture counts | `domain/go/go.test.ts`: `playMove`; `simulation-mode.test.tsx` |
-| Board | Support 9x9, 13x13, and 19x19 grids and star points | `domain/go/go.test.ts`: board utilities; `board-rendering.test.tsx` |
+| Simulation | Alternate colors and retain move numbers on live stones | `domain/go/rules.test.ts`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx`, including move 100 |
+| Simulation | Capture complete single, connected, and adjacent groups | `domain/go/rules.test.ts`; `simulation-mode.test.tsx` |
+| Simulation | Reject occupied moves and self-capture without advancing history | `domain/go/rules.test.ts`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx` |
+| Simulation | Clear captured stones' move numbers and update capture counts | `domain/go/rules.test.ts`; `simulation-mode.test.tsx` |
+| Board | Support 9x9, 13x13, and 19x19 grids and star points | `domain/go/model.test.ts`; `board-rendering.test.tsx` |
 | Board | Keep stones tangent and white outlines equal to interior grid strokes | `board-rendering.test.tsx` |
-| Board | Render contrast-aware triangle and circle marks on any intersection | `domain/go/go.test.ts`: board content editing; `diagram-marks.test.tsx` |
+| Board | Render contrast-aware triangle and circle marks on any intersection | `domain/go/model.test.ts`; `diagram-marks.test.tsx` |
 | Board | Keep the board and content SVG-based at every zoom level | `board-rendering.test.tsx`; `board-controls.test.tsx` |
 | History | Undo and redo placements, drag batches, marks, deletion, captures, and clearing | Component suites under `src/test/app/` |
-| History | Clear redo when a new branch is created | `history.test.tsx` |
+| History | Clear redo when a new branch is created | `application/study-session/history.test.ts`; `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | Navigation | Pan only an oversized board with right-drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
 | Navigation | Enforce `U`, `R`, `M`, `S`, `T`, `B`, `C`, Delete, Backspace, and Escape | `keyboard-shortcuts.test.tsx` |
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
