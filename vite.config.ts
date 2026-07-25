@@ -10,7 +10,11 @@ export default defineConfig({
         extends: true,
         test: {
           name: "unit",
-          include: ["src/go.test.ts"],
+          include: [
+            "src/domain/**/*.test.ts",
+            "src/application/**/*.test.ts",
+            "src/test/architecture.test.ts",
+          ],
           environment: "node",
         },
       },
@@ -26,7 +30,13 @@ export default defineConfig({
     ],
     coverage: {
       provider: "v8",
-      include: ["src/App.tsx", "src/go.ts"],
+      include: [
+        "src/app/**/*.{ts,tsx}",
+        "src/application/**/*.{ts,tsx}",
+        "src/domain/**/*.{ts,tsx}",
+        "src/ui/**/*.{ts,tsx}",
+      ],
+      exclude: ["src/**/*.test.{ts,tsx}"],
       reporter: ["text", "json-summary", "html"],
       reportsDirectory: "coverage",
       thresholds: {

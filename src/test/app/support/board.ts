@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react";
-import type { BoardSize, Point } from "../../../go";
+import type { BoardSize, Point } from "../../../domain/go";
 
 export const CANVAS_SIZE = 720;
 export const PADDING = 42;

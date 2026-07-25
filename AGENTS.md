@@ -33,20 +33,111 @@ before handing off a code change.
 
 ## Code Map
 
-- `src/App.tsx` owns application state, history, controls, keyboard shortcuts,
-  board panning, and SVG rendering.
+- `src/app/App.tsx` is the composition root and owns browser-level
+  confirmation, notice timing, and UI wiring.
+- `src/application/study-session/` owns study state, commands, snapshot
+  history, and pure application transitions.
+- `src/domain/go/` owns the UI-independent board model, Go rules, setup
+  placement, and path generation.
+- `src/ui/board/` owns SVG rendering, board geometry, setup dragging, and
+  panning.
+- `src/ui/controls/` and `src/ui/shortcuts/` own controls and keyboard
+  interaction.
 - `src/test/app/` contains single-concern component workflow suites;
   `src/test/app/support/` separates rendering, controls, and board interactions.
-- `src/App.css` owns the responsive monochrome interface.
-- `src/go.ts` is the UI-independent board model and Go rule engine.
-- `src/go.test.ts` covers board utilities, legality, captures, and setup paths.
+- `src/styles/` separates global, board, control, and shortcut styling.
+- `src/domain/go/go.test.ts` covers board utilities, legality, captures, and
+  setup paths.
+- `src/application/study-session/reducer.test.ts` covers application state
+  transitions and history boundaries.
+- `src/test/architecture.test.ts` enforces inward dependency direction and
+  rejects source cycles.
 - `e2e/*.spec.ts` separates browser-only drag, panning, and responsive layout
   contracts; `e2e/support/` contains shared browser helpers.
 - `docs/testing.md` maps product requirements to automated coverage.
+- `docs/architecture.md` documents dependency and state-ownership boundaries.
 - `docs/images/` contains the README product and reference images.
 
-Keep Go rules independent from React. Prefer adding or changing pure functions
-in `src/go.ts` and covering them in `src/go.test.ts`.
+## Architecture Rules
+
+These are implementation constraints, not suggestions. A change that violates
+them is incomplete even when its behavioral tests pass.
+
+### Dependency Direction
+
+Dependencies must point inward:
+
+- `domain` may depend only on `domain`.
+- `application` may depend on `application` and `domain`.
+- `ui` may depend on `ui`, `application`, and `domain`.
+- `app` may depend on every inward layer and is the only composition root.
+- No inward layer may import from an outward layer.
+- Source dependency cycles are forbidden.
+- New production modules must live in one of these four layers. Do not add a
+  new top-level source layer without an explicit architecture decision,
+  corresponding documentation, and an updated architecture test.
+
+Use the owning module's public exports for cross-layer imports. Do not reach
+through another layer to import its private implementation files or duplicate
+an inward type merely to avoid a valid dependency.
+
+### Responsibility Boundaries
+
+- `domain` contains Go concepts and deterministic transformations. It must not
+  import React or access the DOM, browser globals, storage, timers, or network
+  APIs.
+- `application` contains use-case state, commands, invariants, and snapshot
+  history. Its transitions must remain pure and independently testable. It
+  must not import React or access browser APIs.
+- `ui` renders state and translates user or pointer input into application
+  commands. Components should receive data and semantic callbacks; hooks may
+  own one focused browser interaction such as panning, keyboard input, or
+  pointer capture.
+- `app` wires modules and owns process-edge effects such as confirmation,
+  transient timing, persistence adapters, or future telemetry. Keep it a thin
+  composition root; do not move feature logic back into `App.tsx`.
+- Styles belong with the UI concern they affect. Keep global foundations,
+  board, controls, and shortcut styles separate unless a real shared design
+  primitive emerges.
+
+### State And Effects
+
+- Durable product state belongs in `StudySession` and changes through
+  `studySessionReducer`.
+- Board-changing commands and their undo/redo semantics must be implemented as
+  application transitions. UI handlers must not mutate snapshots or maintain a
+  parallel history.
+- Ephemeral interaction state stays local to the owning UI module: hover,
+  active pointer gestures, panning, popover visibility, and zoom are examples.
+- Keep side effects at the edge. Pure layers return explicit results or
+  rejection reasons; they must not display notices, confirm actions, swallow
+  errors, or write to the console.
+
+### Module Design
+
+- Split by reason to change, not by arbitrary line count. A separate rule
+  engine, state transition, state machine, browser effect, or reusable visual
+  control is a meaningful module boundary.
+- Keep one authoritative implementation of each rule. Do not repeat behavior
+  across reducers, hooks, and components.
+- Prefer small named domain and application functions over generic `utils`,
+  `helpers`, or catch-all `shared` modules. Introduce shared abstractions only
+  after multiple concrete consumers establish the common contract.
+- Keep feature-specific code with its owner. Do not create a generic component
+  or hook solely to make a file shorter.
+- When moving behavior between modules, preserve its public contract and move
+  or add direct tests at the new owning layer.
+
+### Architecture Enforcement
+
+- `npm run test:architecture` must pass after any source-structure or import
+  change. Do not weaken its allowed dependency graph to make a convenient
+  import pass.
+- `npm run test:coverage` measures every production TypeScript module in the
+  four layers and enforces all thresholds per file. Do not exclude a module or
+  add passthrough code merely to satisfy coverage.
+- Keep Go rules independent from React and cover pure rule changes in
+  `src/domain/go/go.test.ts`.
 
 ## Test Requirements
 
@@ -71,7 +162,9 @@ automated tests. A feature change is incomplete unless:
 Maintain strict separation of concerns across test layers:
 
 - Pure Go rules, board transformations, and path generation belong in
-  `src/go.test.ts` and run in the Node-based `unit` Vitest project.
+  `src/domain/go/go.test.ts` and run in the Node-based `unit` Vitest project.
+- Pure study-session transitions and history behavior belong in
+  `src/application/study-session/reducer.test.ts`.
 - React state, history, controls, keyboard behavior, and deterministic SVG
   output belong in a single-concern suite under `src/test/app/` and run in the
   jsdom-based `component` Vitest project.

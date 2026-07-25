@@ -154,22 +154,24 @@ Kipu Study is a client-side React and TypeScript application built with Vite.
 
 ```text
 src/
-  App.tsx       UI state, history, controls, and SVG board
-  App.css       Responsive monochrome interface
-  go.ts         Pure board model and Go move rules
-  go.test.ts    Rules, capture, setup, and board utility tests
-  test/app/     Single-concern component and SVG contract tests
-    support/    Rendering, control, and board interaction helpers
-  test/setup.ts Shared DOM test setup
+  app/          Composition root and browser effects
+  application/  Study-session reducer, commands, and history
+  domain/go/    Pure board model, rules, setup, and paths
+  ui/           Board, controls, shortcuts, and interaction hooks
+  styles/       Global and feature-owned responsive styles
+  test/         Architecture and component workflow tests
 e2e/
   *.spec.ts     Playwright drag, panning, and responsive layout tests
   support/      Shared browser fixtures and board helpers
+docs/
+  architecture.md  Dependency and state-ownership boundaries
+  testing.md       Quality gates and requirement coverage
 docs/images/    README screenshots and visual reference
 ```
 
-The Go rule engine is independent from React, which keeps it straightforward to
-test and leaves room for SGF support, richer variation trees, or a future
-Electron shell.
+Dependencies point inward from `app` to `ui`, `application`, and `domain`. The
+architecture test enforces this direction and rejects cycles. See
+[`docs/architecture.md`](docs/architecture.md) for the full boundary rules.
 
 ## Roadmap
 

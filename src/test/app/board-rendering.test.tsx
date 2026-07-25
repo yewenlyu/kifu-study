@@ -77,4 +77,17 @@ describe("board rendering", () => {
       ),
     ).toBe(true);
   });
+
+  it("shows and clears a stone preview while hovering an empty point", () => {
+    renderApp();
+    const target = boardElement().querySelector(
+      '.hit-targets [data-point="4,4"]',
+    );
+
+    fireEvent.mouseEnter(target!);
+    expect(boardElement().querySelector(".point-preview circle")).toBeTruthy();
+
+    fireEvent.mouseLeave(target!);
+    expect(boardElement().querySelector(".point-preview")).toBeNull();
+  });
 });

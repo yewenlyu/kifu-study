@@ -16,7 +16,7 @@ import {
   type Board,
   type Point,
   type StoneColor,
-} from "./go";
+} from "./index";
 
 function place(
   board: Board,

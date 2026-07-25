@@ -1,0 +1,131 @@
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 26px 22px;
+  border-right: 1px solid #d8d8d8;
+  background: #ffffff;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.control-label {
+  color: #686868;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.segmented {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  width: fit-content;
+  padding: 3px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  background: #eeeeee;
+}
+
+.segmented.wide {
+  width: 100%;
+}
+
+.segment {
+  min-width: 40px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 560;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.segment:hover:not(:disabled) {
+  color: #111111;
+}
+
+.segment[data-active="true"] {
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 14%);
+}
+
+.segment:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.tool-picker .segment {
+  width: 44px;
+  padding: 0;
+}
+
+.stone-swatch,
+.status-stone {
+  display: inline-block;
+  flex: 0 0 auto;
+  border: 1.4px solid #111111;
+  border-radius: 50%;
+}
+
+.stone-swatch {
+  width: 13px;
+  height: 13px;
+}
+
+.status-stone {
+  width: 14px;
+  height: 14px;
+}
+
+.stone-swatch.black,
+.status-stone.black {
+  background: #111111;
+}
+
+.stone-swatch.white,
+.status-stone.white {
+  background: #ffffff;
+}
+
+@media (max-width: 860px) {
+  .control-panel {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 16px;
+    overflow-x: auto;
+    padding: 16px;
+    border-right: 0;
+    border-bottom: 1px solid #d8d8d8;
+  }
+}
+
+@media (max-width: 620px) {
+  .control-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 12px;
+    overflow: visible;
+    padding: 13px 14px;
+  }
+
+  .control-panel .segment {
+    padding: 0 7px;
+    font-size: 11px;
+  }
+}

@@ -8,6 +8,7 @@
     "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
     "test": "npm run test:coverage && npm run test:e2e",
     "test:unit": "vitest run --project unit",
+    "test:architecture": "vitest run --project unit src/test/architecture.test.ts",
     "test:component": "vitest run --project component",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
@@ -19,6 +20,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@babel/parser": "^7.29.7",
     "@playwright/test": "^1.62.0",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^26.1.1",

@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   boardElement,
   clientPoint,
@@ -144,5 +144,75 @@ describe("setup mode", () => {
     });
     fireEvent.pointerCancel(board, { pointerId: 2 });
     expect(stoneAt({ x: 4, y: 4 })).toBeNull();
+  });
+
+  it("ignores unrelated pointer input across setup drag boundaries", () => {
+    renderApp();
+    const board = boardElement();
+    const start = clientPoint({ x: 1, y: 1 }, board);
+
+    fireEvent.pointerMove(board, { ...start, pointerId: 90 });
+    fireEvent.pointerUp(board, { ...start, pointerId: 90 });
+    fireEvent.pointerCancel(board, { pointerId: 90 });
+
+    fireEvent.pointerDown(board, {
+      ...start,
+      button: 2,
+      pointerId: 1,
+    });
+    fireEvent.pointerDown(board, {
+      button: 0,
+      clientX: 0,
+      clientY: 0,
+      pointerId: 2,
+    });
+    expect(board.dataset.setupDragState).toBeUndefined();
+
+    fireEvent.click(screen.getByRole("button", { name: "Simulation" }));
+    fireEvent.pointerDown(board, {
+      ...start,
+      button: 0,
+      pointerId: 3,
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Setup" }));
+    fireEvent.click(screen.getByRole("button", { name: "Triangle label" }));
+    fireEvent.pointerDown(board, {
+      ...start,
+      button: 0,
+      pointerId: 4,
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Place stones" }));
+
+    fireEvent.pointerDown(board, {
+      ...start,
+      button: 0,
+      pointerId: 5,
+    });
+    fireEvent.pointerMove(board, {
+      ...start,
+      button: 0,
+      pointerId: 5,
+    });
+    fireEvent.pointerMove(board, {
+      ...clientPoint({ x: 4, y: 3 }, board),
+      button: 0,
+      pointerId: 6,
+    });
+    fireEvent.pointerUp(board, { ...start, pointerId: 6 });
+    fireEvent.pointerCancel(board, { pointerId: 6 });
+
+    fireEvent.pointerMove(board, {
+      ...clientPoint({ x: 4, y: 3 }, board),
+      button: 0,
+      pointerId: 5,
+    });
+    vi.spyOn(board, "hasPointerCapture").mockReturnValue(false);
+    fireEvent.pointerUp(board, {
+      ...clientPoint({ x: 4, y: 3 }, board),
+      button: 0,
+      pointerId: 5,
+    });
+
+    expect(boardElement().querySelectorAll("[data-stone]")).toHaveLength(6);
   });
 });
