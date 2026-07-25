@@ -25,7 +25,6 @@ import {
   createBoard,
   hasContent,
   oppositeColor,
-  placeSetupStone,
   placeSetupStones,
   playMove,
   pointsAlongOrthogonalPath,
@@ -591,6 +590,7 @@ function GoBoard({
           return (
             <g
               key={`${x}-${y}`}
+              data-point={`${x},${y}`}
               data-stone={cell.stone}
               data-move-number={cell.moveNumber ?? undefined}
               data-selected-stone={isSelected ? "true" : undefined}
@@ -649,7 +649,11 @@ function GoBoard({
           }
 
           return (
-            <g key={`${x}-${y}`} data-mark={cell.mark}>
+            <g
+              key={`${x}-${y}`}
+              data-point={`${x},${y}`}
+              data-mark={cell.mark}
+            >
               {renderMark(
                 cell.mark,
                 coordinate(x),
@@ -825,15 +829,7 @@ export default function App() {
           current?.x === point.x && current.y === point.y ? null : point,
         );
         setNotice("");
-        return;
       }
-
-      setSelectedPoint(null);
-      commit({
-        ...present,
-        board: placeSetupStone(present.board, point, selectedColor),
-      });
-      setNotice("");
       return;
     }
 

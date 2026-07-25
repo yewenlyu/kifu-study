@@ -94,10 +94,11 @@ inside the application.
 
 ## Quick Start
 
-Kipu Study currently requires Node.js 22 or newer.
+Kipu Study currently requires Node.js 22.13 or newer.
 
 ```sh
 npm install
+npx playwright install chromium
 npm run dev
 ```
 
@@ -109,6 +110,12 @@ Run the rules suite and create a production build with:
 npm test
 npm run build
 ```
+
+`npm test` runs the coverage-enforced unit/component suite and the Playwright
+browser suite. Use `npm run test:unit`, `npm run test:component`,
+`npm run test:coverage`, `npm run test:watch`, or `npm run test:e2e` when
+working on one layer. See
+[the testing guide](docs/testing.md) for the requirement coverage map.
 
 ## Deployment
 
@@ -150,7 +157,13 @@ src/
   App.tsx       UI state, history, controls, and SVG board
   App.css       Responsive monochrome interface
   go.ts         Pure board model and Go move rules
-  go.test.ts    Focused capture and legality tests
+  go.test.ts    Rules, capture, setup, and board utility tests
+  test/app/     Single-concern component and SVG contract tests
+    support/    Rendering, control, and board interaction helpers
+  test/setup.ts Shared DOM test setup
+e2e/
+  *.spec.ts     Playwright drag, panning, and responsive layout tests
+  support/      Shared browser fixtures and board helpers
 docs/images/    README screenshots and visual reference
 ```
 

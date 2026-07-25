@@ -16,11 +16,13 @@ the change.
 
 - React 19 and TypeScript
 - Vite for development and production builds
-- Vitest for the Go rule engine
+- Vitest and Testing Library for rules and component behavior
+- Playwright for real-browser interaction and responsive layout
 - SVG for the board and all board content
 
 ```sh
 npm install
+npx playwright install chromium
 npm run dev
 npm test
 npm run build
@@ -33,13 +35,52 @@ before handing off a code change.
 
 - `src/App.tsx` owns application state, history, controls, keyboard shortcuts,
   board panning, and SVG rendering.
+- `src/test/app/` contains single-concern component workflow suites;
+  `src/test/app/support/` separates rendering, controls, and board interactions.
 - `src/App.css` owns the responsive monochrome interface.
 - `src/go.ts` is the UI-independent board model and Go rule engine.
-- `src/go.test.ts` contains focused legality and capture tests.
+- `src/go.test.ts` covers board utilities, legality, captures, and setup paths.
+- `e2e/*.spec.ts` separates browser-only drag, panning, and responsive layout
+  contracts; `e2e/support/` contains shared browser helpers.
+- `docs/testing.md` maps product requirements to automated coverage.
 - `docs/images/` contains the README product and reference images.
 
 Keep Go rules independent from React. Prefer adding or changing pure functions
 in `src/go.ts` and covering them in `src/go.test.ts`.
+
+## Test Requirements
+
+Every implemented feature requirement in this file must be traceable to
+automated tests. A feature change is incomplete unless:
+
+- Each added or changed behavior has a direct test that would fail if the
+  requirement regressed; aggregate coverage alone is not sufficient.
+- Tests cover the successful workflow plus relevant rejection paths, boundary
+  conditions, state transitions, and undo/redo behavior.
+- Deterministic visual requirements such as SVG geometry, responsive layout,
+  overflow, and computed interaction states are asserted in component or
+  browser tests. Qualitative visual inspection supplements these assertions but
+  does not replace them.
+- `docs/testing.md` is updated whenever a requirement or its owning test suite
+  changes, preserving the requirement-to-test map.
+- `npm test` and `npm run build` pass before handoff.
+
+Maintain strict separation of concerns across test layers:
+
+- Pure Go rules, board transformations, and path generation belong in
+  `src/go.test.ts` and run in the Node-based `unit` Vitest project.
+- React state, history, controls, keyboard behavior, and deterministic SVG
+  output belong in a single-concern suite under `src/test/app/` and run in the
+  jsdom-based `component` Vitest project.
+- Real layout, computed styles, responsive overflow, and browser pointer
+  semantics belong in focused Playwright specs under `e2e/`.
+- Shared support modules may contain rendering, querying, interaction drivers,
+  fixtures, and cross-cutting reliability gates. Feature-specific setup and
+  assertions must remain in the owning spec.
+- Do not add unrelated scenarios to an existing suite for convenience. Create
+  or choose the suite whose single responsibility matches the requirement.
+- Keep `npm run test:unit`, `npm run test:component`,
+  `npm run test:coverage`, and `npm run test:e2e` independently runnable.
 
 ## Current Behavior Contracts
 
@@ -113,7 +154,7 @@ unless a product requirement explicitly says otherwise.
 
 Scale verification with the change, but use these as the default gates:
 
-1. Run `npm test`.
+1. Run `npm test`, which includes coverage-enforced Vitest tests and Playwright.
 2. Run `npm run build`.
 3. Inspect the live app with Playwright after interaction or visual changes.
 4. Check both a desktop viewport and a phone-width viewport.
