@@ -40,22 +40,6 @@ export function useKeyboardShortcuts({
         return;
       }
 
-      if (
-        (key === "delete" || key === "backspace") &&
-        session.mode === "setup" &&
-        session.selectedPoint
-      ) {
-        event.preventDefault();
-        dispatch({ type: "selected-stone-removed" });
-        return;
-      }
-
-      if (key === "escape" && session.selectedPoint) {
-        event.preventDefault();
-        dispatch({ type: "selection-cleared" });
-        return;
-      }
-
       switch (key) {
         case "u":
           event.preventDefault();

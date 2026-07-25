@@ -29,9 +29,9 @@ interface GoBoardProps {
   tool: Tool;
   selectedColor: StoneColor;
   nextColor: StoneColor;
-  selectedPoint: Point | null;
   zoom: number;
   onPointClick: (point: Point) => void;
+  onPointClear: (point: Point) => void;
   onSetupStoneDragCommit: (
     points: Point[],
     color: StoneColor,
@@ -45,9 +45,9 @@ export function GoBoard({
   tool,
   selectedColor,
   nextColor,
-  selectedPoint,
   zoom,
   onPointClick,
+  onPointClear,
   onSetupStoneDragCommit,
 }: GoBoardProps) {
   const geometry = useMemo(() => createBoardGeometry(size), [size]);
@@ -65,7 +65,6 @@ export function GoBoard({
     mode,
     tool,
     selectedColor,
-    onPointClick,
     onCommit: onSetupStoneDragCommit,
   });
   const coordinate = (index: number) => boardCoordinate(index, step);
@@ -176,8 +175,6 @@ export function GoBoard({
           const centerY = coordinate(y);
           const labelColor =
             cell.stone === "black" ? "#ffffff" : "#111111";
-          const isSelected =
-            selectedPoint?.x === x && selectedPoint.y === y;
           const numberLength = String(cell.moveNumber ?? "").length;
           const fontSize =
             numberLength >= 3 ? stoneRadius * 0.88 : stoneRadius * 1.12;
@@ -188,7 +185,6 @@ export function GoBoard({
               data-point={`${x},${y}`}
               data-stone={cell.stone}
               data-move-number={cell.moveNumber ?? undefined}
-              data-selected-stone={isSelected ? "true" : undefined}
             >
               <circle
                 cx={centerX}
@@ -219,18 +215,6 @@ export function GoBoard({
                       {cell.moveNumber}
                     </text>
                   )}
-              {isSelected && (
-                <circle
-                  cx={centerX}
-                  cy={centerY}
-                  r={stoneRadius * 0.78}
-                  fill="none"
-                  stroke={labelColor}
-                  strokeWidth={Math.max(1.6, step * 0.025)}
-                  strokeDasharray={`${step * 0.08} ${step * 0.05}`}
-                  pointerEvents="none"
-                />
-              )}
             </g>
           );
         })}
@@ -319,6 +303,10 @@ export function GoBoard({
             data-point={`${x},${y}`}
             onMouseEnter={() => setHovered({ x, y })}
             onMouseLeave={() => setHovered(null)}
+            onContextMenu={(event) => {
+              event.preventDefault();
+              onPointClear({ x, y });
+            }}
             onClick={() => {
               if (mode !== "setup" || tool !== "stone") {
                 onPointClick({ x, y });

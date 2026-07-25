@@ -7,10 +7,9 @@ const SHORTCUTS = [
   { action: "Cycle tool", keys: "T" },
   { action: "Cycle board", keys: "B" },
   { action: "Clear board", keys: "C" },
+  { action: "Clear point / label", keys: "Right-click" },
   { action: "Undo", keys: "U" },
   { action: "Redo", keys: "R" },
-  { action: "Remove stone", keys: "Delete / Backspace" },
-  { action: "Deselect stone", keys: "Esc" },
   { action: "Pan board", keys: "Middle-drag" },
 ] as const;
 

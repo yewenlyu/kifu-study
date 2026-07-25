@@ -190,19 +190,19 @@ Maintain strict separation of concerns across test layers:
   with right-angle turns and applies it as one undoable action on release.
 - Starting a drag on or crossing an occupied intersection cancels the entire
   drag.
-- With the Stone tool active, clicking an occupied intersection selects that
-  stone.
-- Delete or Backspace removes the selected stone and its mark through the
-  normal undoable history.
-- A stationary right-click has no action.
+- Right-clicking an intersection clears the cell, removing its stone and
+  triangle or circle mark through the normal undoable history.
 
 ### Simulation Mode
 
 - The user chooses the first player before the first move.
 - Colors alternate after every legal move.
-- Captures are implemented for complete connected groups.
+- Captures remove complete connected groups together with their move numbers
+  and triangle or circle marks.
 - Self-capture is forbidden.
 - Move numbers remain attached to stones while they are on the board.
+- Right-clicking an intersection clears its triangle or circle mark through
+  the normal undoable history. It never removes a stone or move number.
 - Ko, pass moves, scoring, SGF, and saved variations are not implemented.
 
 ### Board And Labels
@@ -225,8 +225,6 @@ Maintain strict separation of concerns across test layers:
 - `T` cycles Stone, Triangle, and Circle tools.
 - `B` cycles 9x9, 13x13, and 19x19 boards.
 - Clearing the board, including with `C`, switches to Setup mode.
-- Delete or Backspace removes a selected setup stone.
-- Escape clears the current stone selection.
 - Keep shortcuts documented in the README, but do not add visible shortcut
   cues to the application controls.
 - The fixed question mark button in the bottom-left is the only in-app shortcut

@@ -3,7 +3,6 @@ import {
   type Board,
   type BoardSize,
   type Mark,
-  type Point,
   type StoneColor,
 } from "../../domain/go";
 import { createHistory, type History } from "./history";
@@ -31,7 +30,6 @@ export interface StudySession {
   selectedColor: StoneColor;
   firstColor: StoneColor;
   tool: Tool;
-  selectedPoint: Point | null;
   notice: string;
   history: History<StudySnapshot>;
 }
@@ -58,7 +56,6 @@ export function createStudySession(): StudySession {
     selectedColor: "black",
     firstColor,
     tool: "stone",
-    selectedPoint: null,
     notice: "",
     history: createHistory(createStudySnapshot(size, firstColor)),
   };

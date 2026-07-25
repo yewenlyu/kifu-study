@@ -2,7 +2,9 @@ import { act, fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import {
   clickPoint,
+  markAt,
   placeSetupStone,
+  rightClickPoint,
   stoneAt,
 } from "./support/board";
 import { renderApp } from "./support/render";
@@ -32,6 +34,22 @@ describe("simulation mode", () => {
 
     fireEvent.keyDown(window, { key: "s" });
     expect(screen.getByText(/to play · Move 3/)).toBeTruthy();
+  });
+
+  it("right-click clears only a label and preserves its numbered stone", () => {
+    renderApp();
+    fireEvent.click(screen.getByRole("button", { name: "Simulation" }));
+    clickPoint({ x: 3, y: 3 });
+    fireEvent.click(screen.getByRole("button", { name: "Triangle label" }));
+    clickPoint({ x: 3, y: 3 });
+
+    rightClickPoint({ x: 3, y: 3 });
+    expect(stoneAt({ x: 3, y: 3 })?.dataset.stone).toBe("black");
+    expect(stoneAt({ x: 3, y: 3 })?.dataset.moveNumber).toBe("1");
+    expect(stoneAt({ x: 3, y: 3 })?.querySelector("polygon")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    expect(stoneAt({ x: 3, y: 3 })?.querySelector("polygon")).toBeTruthy();
   });
 
   it("rejects occupied moves without advancing the turn and clears the notice", () => {
@@ -78,6 +96,9 @@ describe("simulation mode", () => {
     renderApp();
     fireEvent.click(screen.getByRole("button", { name: "White" }));
     placeSetupStone({ x: 1, y: 1 });
+    fireEvent.click(screen.getByRole("button", { name: "Triangle label" }));
+    clickPoint({ x: 1, y: 1 });
+    fireEvent.click(screen.getByRole("button", { name: "Place stones" }));
     fireEvent.click(screen.getByRole("button", { name: "Black" }));
     for (const point of [
       { x: 0, y: 1 },
@@ -91,6 +112,7 @@ describe("simulation mode", () => {
     clickPoint({ x: 1, y: 2 });
 
     expect(stoneAt({ x: 1, y: 1 })).toBeNull();
+    expect(markAt({ x: 1, y: 1 })).toBeNull();
     expect(document.querySelector(".capture-count")?.textContent).toBe(
       "Captures  B 1 · W 0",
     );

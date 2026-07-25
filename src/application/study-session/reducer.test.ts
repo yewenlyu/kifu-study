@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { placeSetupStones, type Point } from "../../domain/go";
+import type { Point } from "../../domain/go";
 import {
   createStudySession,
   isSimulationStarted,
@@ -54,44 +54,69 @@ describe("studySessionReducer", () => {
     expect(branched.history.present.board[3][3].stone).toBe("white");
   });
 
-  it("selects, marks, and removes setup stones through history", () => {
+  it("clears setup points with their labels through history", () => {
     const point = { x: 4, y: 4 };
-    let session = apply(
+    const labeled = apply(
       createStudySession(),
       {
         type: "setup-stones-placed",
         points: [point],
         color: "black",
       },
-      { type: "point-clicked", point },
-    );
-    expect(session.selectedPoint).toEqual(point);
-
-    session = studySessionReducer(session, {
-      type: "point-clicked",
-      point,
-    });
-    expect(session.selectedPoint).toBeNull();
-
-    session = apply(
-      session,
       { type: "tool-changed", tool: "triangle" },
       { type: "point-clicked", point },
-      { type: "tool-changed", tool: "stone" },
-      { type: "point-clicked", point },
-      { type: "selected-stone-removed" },
     );
-    expect(session.history.present.board[4][4]).toEqual({
+
+    const cleared = studySessionReducer(labeled, {
+      type: "point-cleared",
+      point,
+    });
+    expect(cleared.history.present.board[4][4]).toEqual({
       stone: null,
       moveNumber: null,
       mark: null,
     });
 
-    const restored = studySessionReducer(session, { type: "undo" });
+    const restored = studySessionReducer(cleared, { type: "undo" });
     expect(restored.history.present.board[4][4]).toMatchObject({
       stone: "black",
       mark: "triangle",
     });
+  });
+
+  it("clears only simulation labels and ignores unlabeled points", () => {
+    const point = { x: 3, y: 3 };
+    const labeled = apply(
+      createStudySession(),
+      { type: "mode-changed", mode: "simulation" },
+      { type: "point-clicked", point },
+      { type: "tool-changed", tool: "circle" },
+      { type: "point-clicked", point },
+    );
+
+    const cleared = studySessionReducer(labeled, {
+      type: "point-cleared",
+      point,
+    });
+    expect(cleared.history.present.board[3][3]).toEqual({
+      stone: "black",
+      moveNumber: 1,
+      mark: null,
+    });
+
+    const restored = studySessionReducer(cleared, { type: "undo" });
+    expect(restored.history.present.board[3][3]).toEqual({
+      stone: "black",
+      moveNumber: 1,
+      mark: "circle",
+    });
+
+    expect(
+      studySessionReducer(cleared, {
+        type: "point-cleared",
+        point,
+      }),
+    ).toBe(cleared);
   });
 
   it("plays legal simulation moves and reports rejected moves", () => {
@@ -183,7 +208,6 @@ describe("studySessionReducer", () => {
       mode: "setup",
       tool: "stone",
       selectedColor: "white",
-      selectedPoint: null,
     });
   });
 
@@ -212,12 +236,10 @@ describe("studySessionReducer", () => {
     ).toBe(empty);
   });
 
-  it("changes board size and handles selection no-op boundaries", () => {
+  it("changes board size and handles history no-op boundaries", () => {
     let session = apply(
       createStudySession(),
       { type: "board-size-changed", size: 9 },
-      { type: "selection-cleared" },
-      { type: "selected-stone-removed" },
       { type: "undo" },
       { type: "redo" },
     );
@@ -228,25 +250,11 @@ describe("studySessionReducer", () => {
     expect(session.history.future).toEqual([]);
 
     const emptyPoint: Point = { x: 0, y: 0 };
-    session = {
-      ...session,
-      selectedPoint: emptyPoint,
-      history: {
-        ...session.history,
-        present: {
-          ...session.history.present,
-          board: placeSetupStones(
-            session.history.present.board,
-            [{ x: 1, y: 1 }],
-            "black",
-          ),
-        },
-      },
-    };
-    session = studySessionReducer(session, {
-      type: "selected-stone-removed",
-    });
-    expect(session.selectedPoint).toBeNull();
-    expect(session.history.present.board[1][1].stone).toBe("black");
+    expect(
+      studySessionReducer(session, {
+        type: "point-cleared",
+        point: emptyPoint,
+      }),
+    ).toBe(session);
   });
 });

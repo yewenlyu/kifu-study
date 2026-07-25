@@ -32,10 +32,12 @@ position editable, replayable, and easier to use while learning or teaching.
 - **Setup mode** places black or white stones in any order without applying Go
   rules. Left-drag with the Stone tool to preview and place an orthogonal path
   that can make right-angle turns. Starting on or crossing an occupied
-  intersection cancels the drag. Select a stone and press Delete or Backspace
-  to remove it.
+  intersection cancels the drag. Right-click an intersection to clear its
+  stone and triangle or circle label.
 - **Simulation mode** alternates turns from a chosen starting color, captures
-  groups with no liberties, and rejects self-capture.
+  groups with no liberties, and rejects self-capture. Right-click removes only
+  a triangle or circle label; the numbered stone remains. Captured stones
+  remove their move numbers and labels with them.
 - **Automatic move numbers** preserve the played sequence directly on the
   stones.
 - **Diagram marks** add triangles or circles with contrast-aware colors on
@@ -62,8 +64,8 @@ position editable, replayable, and easier to use while learning or teaching.
    previews an orthogonal path with right-angle turns and commits it on
    release; touching an occupied intersection cancels the drag.
 4. Select the triangle or circle tool to annotate intersections.
-5. With the Stone tool active, select a stone and press Delete or Backspace to
-   remove it.
+5. Right-click an intersection to clear its stone and triangle or circle
+   label.
 
 ### Play A Variation
 
@@ -72,7 +74,9 @@ position editable, replayable, and easier to use while learning or teaching.
 3. Choose whether Black or White moves first.
 4. Place moves normally. Kipu Study numbers each move, alternates colors, and
    removes captured groups.
-5. Use undo and redo to compare branches or revisit a teaching point.
+5. Right-click an intersection to clear its triangle or circle label without
+   removing its numbered stone.
+6. Use undo and redo to compare branches or revisit a teaching point.
 
 ## Shortcuts
 
@@ -86,8 +90,7 @@ inside the application.
 | Cycle Stone / Triangle / Circle tool | `T` | `T` |
 | Cycle 9x9 / 13x13 / 19x19 board | `B` | `B` |
 | Clear the board and return to Setup | `C` | `C` |
-| Remove selected setup stone | `Delete` / `Backspace` | `Delete` / `Backspace` |
-| Deselect the current stone | `Escape` | `Escape` |
+| Clear setup point / simulation label | Right-click | Right-click |
 | Undo | `U` | `U` |
 | Redo | `R` | `R` |
 | Pan an oversized board | Middle-drag | Middle-drag |

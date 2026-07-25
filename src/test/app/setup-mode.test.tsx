@@ -7,12 +7,13 @@ import {
   dragSetupStonePath,
   markAt,
   placeSetupStone,
+  rightClickPoint,
   stoneAt,
 } from "./support/board";
 import { renderApp } from "./support/render";
 
 describe("setup mode", () => {
-  it("places either color freely and selects an occupied point on click", () => {
+  it("places either color freely without replacing occupied points", () => {
     renderApp();
 
     placeSetupStone({ x: 1, y: 1 });
@@ -24,21 +25,16 @@ describe("setup mode", () => {
     expect(stoneAt({ x: 1, y: 1 })?.dataset.moveNumber).toBeUndefined();
 
     placeSetupStone({ x: 1, y: 1 }, 2);
-    expect(stoneAt({ x: 1, y: 1 })?.dataset.selectedStone).toBe("true");
-
-    placeSetupStone({ x: 1, y: 1 }, 3);
-    expect(stoneAt({ x: 1, y: 1 })?.dataset.selectedStone).toBeUndefined();
+    expect(stoneAt({ x: 1, y: 1 })?.dataset.stone).toBe("black");
   });
 
-  it("removes a selected stone and its mark through undoable history", () => {
+  it("right-click clears a point and its label through undoable history", () => {
     renderApp();
     placeSetupStone({ x: 3, y: 3 });
     fireEvent.click(screen.getByRole("button", { name: "Triangle label" }));
     clickPoint({ x: 3, y: 3 });
-    fireEvent.click(screen.getByRole("button", { name: "Place stones" }));
-    placeSetupStone({ x: 3, y: 3 }, 2);
 
-    fireEvent.keyDown(window, { key: "Delete" });
+    rightClickPoint({ x: 3, y: 3 });
     expect(stoneAt({ x: 3, y: 3 })).toBeNull();
     expect(markAt({ x: 3, y: 3 })).toBeNull();
 

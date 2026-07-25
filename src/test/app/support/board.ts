@@ -87,6 +87,10 @@ export function clickPoint(point: Point) {
   fireEvent.click(hitTarget(point));
 }
 
+export function rightClickPoint(point: Point) {
+  fireEvent.contextMenu(hitTarget(point));
+}
+
 export function dragSetupStonePath(points: Point[], pointerId = 1) {
   const board = boardElement();
   const [start, ...rest] = points;

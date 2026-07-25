@@ -101,6 +101,9 @@ export default function App() {
           onPointClick={(point) =>
             dispatch({ type: "point-clicked", point })
           }
+          onPointClear={(point) =>
+            dispatch({ type: "point-cleared", point })
+          }
           onSetupStoneDragCommit={(points, color) =>
             dispatch({ type: "setup-stones-placed", points, color })
           }

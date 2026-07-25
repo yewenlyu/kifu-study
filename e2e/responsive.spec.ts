@@ -29,5 +29,5 @@ test("keeps every control in two columns without page overflow", async ({
   await help.click();
   const dialog = page.getByRole("dialog", { name: "Keyboard shortcuts" });
   await expect(dialog).toBeInViewport();
-  await expect(dialog.getByRole("term")).toHaveCount(10);
+  await expect(dialog.getByRole("term")).toHaveCount(9);
 });

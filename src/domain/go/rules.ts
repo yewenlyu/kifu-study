@@ -105,6 +105,7 @@ export function playMove(
           ...nextBoard[y][x],
           stone: null,
           moveNumber: null,
+          mark: null,
         };
       });
     }

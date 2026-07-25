@@ -27,6 +27,7 @@ interface BoardWorkspaceProps {
   onRedo: () => void;
   onClear: () => void;
   onPointClick: (point: Point) => void;
+  onPointClear: (point: Point) => void;
   onSetupStoneDragCommit: (
     points: Point[],
     color: StoneColor,
@@ -41,10 +42,10 @@ export function BoardWorkspace({
   onRedo,
   onClear,
   onPointClick,
+  onPointClear,
   onSetupStoneDragCommit,
 }: BoardWorkspaceProps) {
-  const { history, mode, selectedColor, selectedPoint, size, tool } =
-    session;
+  const { history, mode, selectedColor, size, tool } = session;
   const { present } = history;
   const { isPanning, panHandlers } = useBoardPan();
   const zoomIndex = ZOOM_LEVELS.indexOf(
@@ -170,9 +171,9 @@ export function BoardWorkspace({
             tool={tool}
             selectedColor={selectedColor}
             nextColor={present.nextColor}
-            selectedPoint={selectedPoint}
             zoom={zoom}
             onPointClick={onPointClick}
+            onPointClear={onPointClear}
             onSetupStoneDragCommit={onSetupStoneDragCommit}
           />
         </div>

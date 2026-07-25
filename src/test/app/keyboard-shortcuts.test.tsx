@@ -66,17 +66,14 @@ describe("keyboard shortcuts", () => {
     ).toBe(true);
   });
 
-  it("deselects with Escape and removes with Backspace", () => {
+  it("does not remove setup stones with Delete or Backspace", () => {
     renderApp();
     placeSetupStone({ x: 2, y: 2 });
     placeSetupStone({ x: 2, y: 2 }, 2);
 
-    fireEvent.keyDown(window, { key: "Escape" });
-    expect(stoneAt({ x: 2, y: 2 })?.dataset.selectedStone).toBeUndefined();
-
-    placeSetupStone({ x: 2, y: 2 }, 3);
+    fireEvent.keyDown(window, { key: "Delete" });
     fireEvent.keyDown(window, { key: "Backspace" });
-    expect(stoneAt({ x: 2, y: 2 })).toBeNull();
+    expect(stoneAt({ x: 2, y: 2 })?.dataset.stone).toBe("black");
   });
 
   it("ignores commands from editable targets, modifiers, and repeats", () => {

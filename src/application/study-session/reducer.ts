@@ -25,6 +25,7 @@ import {
 
 export type StudyAction =
   | { type: "point-clicked"; point: Point }
+  | { type: "point-cleared"; point: Point }
   | {
       type: "setup-stones-placed";
       points: Point[];
@@ -38,8 +39,6 @@ export type StudyAction =
   | { type: "tool-changed"; tool: Tool }
   | { type: "board-size-changed"; size: BoardSize }
   | { type: "board-cleared" }
-  | { type: "selected-stone-removed" }
-  | { type: "selection-cleared" }
   | { type: "notice-dismissed" };
 
 function commit(
@@ -48,7 +47,6 @@ function commit(
 ): StudySession {
   return {
     ...session,
-    selectedPoint: null,
     notice: "",
     history: commitHistory(session.history, snapshot),
   };
@@ -68,19 +66,7 @@ function handlePointClick(
   }
 
   if (session.mode === "setup") {
-    const currentCell = present.board[point.y][point.x];
-    if (currentCell.stone === null) {
-      return session;
-    }
-
-    const isSelected =
-      session.selectedPoint?.x === point.x &&
-      session.selectedPoint.y === point.y;
-    return {
-      ...session,
-      selectedPoint: isSelected ? null : point,
-      notice: "",
-    };
+    return session;
   }
 
   const result = playMove(
@@ -93,7 +79,6 @@ function handlePointClick(
   if (!result.ok) {
     return {
       ...session,
-      selectedPoint: null,
       notice:
         result.reason === "occupied"
           ? "That intersection is occupied."
@@ -113,12 +98,47 @@ function handlePointClick(
   });
 }
 
+function handlePointClear(
+  session: StudySession,
+  point: Point,
+): StudySession {
+  const present = session.history.present;
+  const cell = present.board[point.y]?.[point.x];
+
+  if (!cell) {
+    return session;
+  }
+
+  if (session.mode === "setup") {
+    if (
+      cell.stone === null &&
+      cell.moveNumber === null &&
+      cell.mark === null
+    ) {
+      return session;
+    }
+
+    return commit(session, {
+      ...present,
+      board: removePoint(present.board, point),
+    });
+  }
+
+  if (cell.mark === null) {
+    return session;
+  }
+
+  return commit(session, {
+    ...present,
+    board: toggleMark(present.board, point, cell.mark),
+  });
+}
+
 function changeMode(session: StudySession, mode: Mode): StudySession {
   const nextSession = {
     ...session,
     mode,
     tool: "stone" as const,
-    selectedPoint: null,
     notice: "",
   };
 
@@ -144,6 +164,8 @@ export function studySessionReducer(
   switch (action.type) {
     case "point-clicked":
       return handlePointClick(session, action.point);
+    case "point-cleared":
+      return handlePointClear(session, action.point);
     case "setup-stones-placed": {
       const board = placeSetupStones(
         present.board,
@@ -157,14 +179,12 @@ export function studySessionReducer(
     case "undo":
       return {
         ...session,
-        selectedPoint: null,
         notice: "",
         history: undoHistory(session.history),
       };
     case "redo":
       return {
         ...session,
-        selectedPoint: null,
         notice: "",
         history: redoHistory(session.history),
       };
@@ -191,14 +211,11 @@ export function studySessionReducer(
       return {
         ...session,
         tool: action.tool,
-        selectedPoint:
-          action.tool === "stone" ? session.selectedPoint : null,
       };
     case "board-size-changed":
       return {
         ...session,
         size: action.size,
-        selectedPoint: null,
         notice: "",
         history: createHistory(
           createStudySnapshot(action.size, session.firstColor),
@@ -216,22 +233,6 @@ export function studySessionReducer(
         },
         createStudySnapshot(session.size, session.firstColor),
       );
-    case "selected-stone-removed": {
-      const point = session.selectedPoint;
-      if (session.mode !== "setup" || point === null) {
-        return session;
-      }
-
-      const selectedCell = present.board[point.y]?.[point.x];
-      return selectedCell?.stone
-        ? commit(session, {
-            ...present,
-            board: removePoint(present.board, point),
-          })
-        : { ...session, selectedPoint: null, notice: "" };
-    }
-    case "selection-cleared":
-      return { ...session, selectedPoint: null };
     case "notice-dismissed":
       return { ...session, notice: "" };
   }

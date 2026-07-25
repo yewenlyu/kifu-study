@@ -23,7 +23,6 @@ import { pointFromClientPosition } from "./geometry";
 
 interface SetupPointerDrag {
   pointerId: number;
-  startPoint: Point;
   startClientX: number;
   startClientY: number;
   endPoint: Point;
@@ -31,8 +30,6 @@ interface SetupPointerDrag {
   points: Point[];
   color: StoneColor;
   status: "previewing" | "canceled";
-  moved: boolean;
-  startedOccupied: boolean;
 }
 
 export interface SetupDragPreview {
@@ -48,7 +45,6 @@ interface SetupInteractionOptions {
   mode: Mode;
   tool: Tool;
   selectedColor: StoneColor;
-  onPointClick: (point: Point) => void;
   onCommit: (points: Point[], color: StoneColor) => void;
 }
 
@@ -74,7 +70,6 @@ export function useSetupInteraction({
   mode,
   tool,
   selectedColor,
-  onPointClick,
   onCommit,
 }: SetupInteractionOptions) {
   const [hovered, setHovered] = useState<Point | null>(null);
@@ -116,7 +111,6 @@ export function useSetupInteraction({
     const points = startedOccupied ? [] : [point];
     pointerDrag.current = {
       pointerId: event.pointerId,
-      startPoint: point,
       startClientX: event.clientX,
       startClientY: event.clientY,
       endPoint: point,
@@ -124,8 +118,6 @@ export function useSetupInteraction({
       points,
       color: selectedColor,
       status,
-      moved: false,
-      startedOccupied,
     };
     setHovered(point);
     setPreview({ points, color: selectedColor, status });
@@ -150,7 +142,6 @@ export function useSetupInteraction({
       return;
     }
 
-    drag.moved = true;
     if (drag.status === "canceled") {
       return;
     }
@@ -208,9 +199,7 @@ export function useSetupInteraction({
     pointerDrag.current = null;
     setPreview(null);
 
-    if (!drag.moved && drag.startedOccupied) {
-      onPointClick(drag.startPoint);
-    } else if (drag.status === "previewing") {
+    if (drag.status === "previewing") {
       onCommit(drag.points, drag.color);
     }
 

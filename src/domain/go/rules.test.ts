@@ -57,7 +57,7 @@ describe("playMove", () => {
     }
   });
 
-  it("captures an entire connected group and clears its move numbers", () => {
+  it("captures an entire connected group and clears its numbers and marks", () => {
     const board = boardWith([
       [{ x: 1, y: 1 }, "white"],
       [{ x: 2, y: 1 }, "white"],
@@ -68,7 +68,9 @@ describe("playMove", () => {
       [{ x: 3, y: 1 }, "black"],
     ]);
     board[1][1].moveNumber = 4;
+    board[1][1].mark = "triangle";
     board[1][2].moveNumber = 5;
+    board[1][2].mark = "circle";
 
     const result = playMove(board, { x: 2, y: 2 }, "black", 8);
 
@@ -77,10 +79,12 @@ describe("playMove", () => {
       expect(result.board[1][1]).toMatchObject({
         stone: null,
         moveNumber: null,
+        mark: null,
       });
       expect(result.board[1][2]).toMatchObject({
         stone: null,
         moveNumber: null,
+        mark: null,
       });
       expect(result.captured).toBe(2);
     }

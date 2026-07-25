@@ -29,7 +29,6 @@ describe("study-session model", () => {
       selectedColor: "black",
       firstColor: "black",
       tool: "stone",
-      selectedPoint: null,
       notice: "",
     });
     expect(session.history.past).toEqual([]);
