@@ -21,11 +21,14 @@ import {
 } from "lucide-react";
 import {
   BOARD_SIZES,
+  canPlaceSetupStones,
   createBoard,
   hasContent,
   oppositeColor,
   placeSetupStone,
+  placeSetupStones,
   playMove,
+  pointsAlongAxis,
   removePoint,
   toggleMark,
   type Board,
@@ -65,6 +68,27 @@ interface BoardPan {
   startScrollLeft: number;
   startScrollTop: number;
   dragged: boolean;
+}
+
+type DragAxis = "horizontal" | "vertical";
+
+interface SetupPointerDrag {
+  pointerId: number;
+  startPoint: Point;
+  startClientX: number;
+  startClientY: number;
+  axis: DragAxis | null;
+  points: Point[];
+  color: StoneColor;
+  canceled: boolean;
+  moved: boolean;
+  startedOccupied: boolean;
+}
+
+interface SetupDragPreview {
+  points: Point[];
+  color: StoneColor;
+  canceled: boolean;
 }
 
 const ZOOM_LEVELS = [80, 100, 125, 160] as const;
@@ -235,6 +259,10 @@ interface GoBoardProps {
   selectedPoint: Point | null;
   zoom: number;
   onPointClick: (point: Point) => void;
+  onSetupStoneDragCommit: (
+    points: Point[],
+    color: StoneColor,
+  ) => void;
 }
 
 function GoBoard({
@@ -247,8 +275,12 @@ function GoBoard({
   selectedPoint,
   zoom,
   onPointClick,
+  onSetupStoneDragCommit,
 }: GoBoardProps) {
   const [hovered, setHovered] = useState<Point | null>(null);
+  const [setupDragPreview, setSetupDragPreview] =
+    useState<SetupDragPreview | null>(null);
+  const setupPointerDrag = useRef<SetupPointerDrag | null>(null);
   const padding = 42;
   const canvasSize = 720;
   const step = (canvasSize - padding * 2) / (size - 1);
@@ -267,6 +299,157 @@ function GoBoard({
 
   const coordinate = (index: number) => padding + index * step;
   const previewColor = mode === "setup" ? selectedColor : nextColor;
+
+  useEffect(() => {
+    setupPointerDrag.current = null;
+    setSetupDragPreview(null);
+  }, [board, mode, size, tool]);
+
+  const pointFromPointer = (
+    event: ReactPointerEvent<SVGSVGElement>,
+  ): Point | null => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const localX =
+      ((event.clientX - bounds.left) * canvasSize) / bounds.width;
+    const localY =
+      ((event.clientY - bounds.top) * canvasSize) / bounds.height;
+    const x = Math.round((localX - padding) / step);
+    const y = Math.round((localY - padding) / step);
+
+    if (x < 0 || x >= size || y < 0 || y >= size) {
+      return null;
+    }
+
+    return Math.hypot(localX - coordinate(x), localY - coordinate(y)) <=
+      step * 0.47
+      ? { x, y }
+      : null;
+  };
+
+  const handleSetupPointerDown = (
+    event: ReactPointerEvent<SVGSVGElement>,
+  ) => {
+    if (event.button !== 0 || mode !== "setup" || tool !== "stone") {
+      return;
+    }
+
+    const point = pointFromPointer(event);
+    if (!point) {
+      return;
+    }
+
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const startedOccupied = board[point.y][point.x].stone !== null;
+    setupPointerDrag.current = {
+      pointerId: event.pointerId,
+      startPoint: point,
+      startClientX: event.clientX,
+      startClientY: event.clientY,
+      axis: null,
+      points: startedOccupied ? [] : [point],
+      color: selectedColor,
+      canceled: startedOccupied,
+      moved: false,
+      startedOccupied,
+    };
+    setHovered(point);
+    setSetupDragPreview({
+      points: startedOccupied ? [] : [point],
+      color: selectedColor,
+      canceled: startedOccupied,
+    });
+  };
+
+  const handleSetupPointerMove = (
+    event: ReactPointerEvent<SVGSVGElement>,
+  ) => {
+    const drag = setupPointerDrag.current;
+    if (!drag || drag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const point = pointFromPointer(event);
+    setHovered(point);
+
+    if (!point) {
+      return;
+    }
+
+    if (
+      drag.startPoint.x === point.x &&
+      drag.startPoint.y === point.y &&
+      drag.axis === null
+    ) {
+      return;
+    }
+
+    drag.moved = true;
+    if (drag.canceled) {
+      return;
+    }
+
+    if (drag.axis === null) {
+      drag.axis =
+        Math.abs(event.clientX - drag.startClientX) >=
+        Math.abs(event.clientY - drag.startClientY)
+          ? "horizontal"
+          : "vertical";
+    }
+
+    const endPoint =
+      drag.axis === "horizontal"
+        ? { x: point.x, y: drag.startPoint.y }
+        : { x: drag.startPoint.x, y: point.y };
+    const points = pointsAlongAxis(drag.startPoint, endPoint);
+
+    if (!canPlaceSetupStones(board, points)) {
+      drag.points = [];
+      drag.canceled = true;
+    } else {
+      drag.points = points;
+    }
+
+    setSetupDragPreview({
+      points: drag.points,
+      color: drag.color,
+      canceled: drag.canceled,
+    });
+  };
+
+  const finishSetupPointer = (
+    event: ReactPointerEvent<SVGSVGElement>,
+  ) => {
+    const drag = setupPointerDrag.current;
+    if (!drag || drag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    setupPointerDrag.current = null;
+    setSetupDragPreview(null);
+
+    if (!drag.moved && drag.startedOccupied) {
+      onPointClick(drag.startPoint);
+    } else if (!drag.canceled) {
+      onSetupStoneDragCommit(drag.points, drag.color);
+    }
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const cancelSetupPointer = (
+    event: ReactPointerEvent<SVGSVGElement>,
+  ) => {
+    const drag = setupPointerDrag.current;
+    if (!drag || drag.pointerId !== event.pointerId) {
+      return;
+    }
+
+    setupPointerDrag.current = null;
+    setSetupDragPreview(null);
+  };
 
   const renderMark = (
     mark: Mark,
@@ -309,6 +492,18 @@ function GoBoard({
       role="img"
       aria-label={`${size} by ${size} Go board`}
       data-board-size={size}
+      data-setup-drag-state={
+        setupDragPreview
+          ? setupDragPreview.canceled
+            ? "canceled"
+            : "preview"
+          : undefined
+      }
+      onPointerDown={handleSetupPointerDown}
+      onPointerMove={handleSetupPointerMove}
+      onPointerUp={finishSetupPointer}
+      onPointerCancel={cancelSetupPointer}
+      onLostPointerCapture={cancelSetupPointer}
     >
       <rect width={canvasSize} height={canvasSize} fill="#ffffff" />
 
@@ -439,7 +634,33 @@ function GoBoard({
         })}
       </g>
 
-      {hovered &&
+      {setupDragPreview && !setupDragPreview.canceled && (
+        <g
+          className="setup-drag-preview"
+          data-preview-color={setupDragPreview.color}
+          aria-hidden="true"
+        >
+          {setupDragPreview.points.map(({ x, y }) => (
+            <circle
+              key={`${x}-${y}`}
+              cx={coordinate(x)}
+              cy={coordinate(y)}
+              r={stoneRadius}
+              fill={
+                setupDragPreview.color === "black"
+                  ? "#111111"
+                  : "#ffffff"
+              }
+              stroke="#111111"
+              strokeWidth={stoneStrokeWidth}
+              data-preview-point={`${x},${y}`}
+            />
+          ))}
+        </g>
+      )}
+
+      {setupDragPreview === null &&
+        hovered &&
         (tool !== "stone" ||
           board[hovered.y][hovered.x].stone === null) && (
         <g className="point-preview" aria-hidden="true">
@@ -476,7 +697,11 @@ function GoBoard({
             data-point={`${x},${y}`}
             onMouseEnter={() => setHovered({ x, y })}
             onMouseLeave={() => setHovered(null)}
-            onClick={() => onPointClick({ x, y })}
+            onClick={() => {
+              if (mode !== "setup" || tool !== "stone") {
+                onPointClick({ x, y });
+              }
+            }}
           />
         ))}
       </g>
@@ -612,6 +837,20 @@ export default function App() {
           present.captures[present.nextColor] + result.captured,
       },
     });
+    setNotice("");
+  };
+
+  const handleSetupStoneDragCommit = (
+    points: Point[],
+    color: StoneColor,
+  ) => {
+    const board = placeSetupStones(present.board, points, color);
+    if (board === present.board) {
+      return;
+    }
+
+    setSelectedPoint(null);
+    commit({ ...present, board });
     setNotice("");
   };
 
@@ -1110,6 +1349,7 @@ export default function App() {
                 selectedPoint={selectedPoint}
                 zoom={zoom}
                 onPointClick={handlePointClick}
+                onSetupStoneDragCommit={handleSetupStoneDragCommit}
               />
             </div>
 

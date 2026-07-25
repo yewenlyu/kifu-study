@@ -323,6 +323,16 @@ button:focus-visible {
   opacity: 0.28;
 }
 
+.setup-drag-preview {
+  pointer-events: none;
+  opacity: 0.42;
+}
+
+.go-board[data-setup-drag-state="canceled"],
+.go-board[data-setup-drag-state="canceled"] .hit-targets circle {
+  cursor: not-allowed;
+}
+
 .hit-targets circle {
   cursor: crosshair;
 }

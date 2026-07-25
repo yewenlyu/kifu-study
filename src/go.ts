@@ -153,13 +153,57 @@ export function placeSetupStone(
   point: Point,
   color: StoneColor,
 ): Board {
+  return placeSetupStones(board, [point], color);
+}
+
+export function placeSetupStones(
+  board: Board,
+  points: Point[],
+  color: StoneColor,
+): Board {
+  if (!canPlaceSetupStones(board, points)) {
+    return board;
+  }
+
   const nextBoard = cloneBoard(board);
-  nextBoard[point.y][point.x] = {
-    ...nextBoard[point.y][point.x],
-    stone: color,
-    moveNumber: null,
-  };
+  for (const { x, y } of points) {
+    nextBoard[y][x] = {
+      ...nextBoard[y][x],
+      stone: color,
+      moveNumber: null,
+    };
+  }
+
   return nextBoard;
+}
+
+export function canPlaceSetupStones(
+  board: Board,
+  points: Point[],
+): boolean {
+  return (
+    points.length > 0 &&
+    points.every(({ x, y }) => board[y]?.[x]?.stone === null)
+  );
+}
+
+export function pointsAlongAxis(start: Point, end: Point): Point[] {
+  if (start.x !== end.x && start.y !== end.y) {
+    return [];
+  }
+
+  const deltaX = end.x - start.x;
+  const deltaY = end.y - start.y;
+  const steps = Math.max(Math.abs(deltaX), Math.abs(deltaY));
+
+  if (steps === 0) {
+    return [start];
+  }
+
+  return Array.from({ length: steps + 1 }, (_, index) => ({
+    x: Math.round(start.x + (deltaX * index) / steps),
+    y: Math.round(start.y + (deltaY * index) / steps),
+  }));
 }
 
 export function removePoint(board: Board, point: Point): Board {

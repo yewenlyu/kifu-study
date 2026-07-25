@@ -47,6 +47,10 @@ in `src/go.ts` and covering them in `src/go.test.ts`.
 
 - Black and white stones may be placed in any order.
 - Setup placement does not apply capture or self-capture rules.
+- Left-dragging with the Stone tool previews a consecutive horizontal or
+  vertical wall and applies it as one undoable action on release.
+- Starting a drag on or crossing an occupied intersection cancels the entire
+  drag.
 - With the Stone tool active, clicking an occupied intersection selects that
   stone.
 - Delete or Backspace removes the selected stone and its mark through the

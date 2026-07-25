@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  canPlaceSetupStones,
   createBoard,
   placeSetupStone,
+  placeSetupStones,
   playMove,
+  pointsAlongAxis,
   removePoint,
   toggleMark,
   type Board,
@@ -128,5 +131,58 @@ describe("removePoint", () => {
       moveNumber: null,
       mark: null,
     });
+  });
+});
+
+describe("setup drag placement", () => {
+  it("returns consecutive points only along one axis", () => {
+    expect(pointsAlongAxis({ x: 1, y: 2 }, { x: 5, y: 2 })).toEqual([
+      { x: 1, y: 2 },
+      { x: 2, y: 2 },
+      { x: 3, y: 2 },
+      { x: 4, y: 2 },
+      { x: 5, y: 2 },
+    ]);
+    expect(pointsAlongAxis({ x: 3, y: 4 }, { x: 3, y: 1 })).toEqual([
+      { x: 3, y: 4 },
+      { x: 3, y: 3 },
+      { x: 3, y: 2 },
+      { x: 3, y: 1 },
+    ]);
+    expect(pointsAlongAxis({ x: 1, y: 2 }, { x: 5, y: 4 })).toEqual(
+      [],
+    );
+  });
+
+  it("cancels the entire placement when any point is occupied", () => {
+    const board = placeSetupStone(
+      createBoard(9),
+      { x: 2, y: 4 },
+      "white",
+    );
+    const points = pointsAlongAxis({ x: 0, y: 4 }, { x: 4, y: 4 });
+
+    const result = placeSetupStones(board, points, "black");
+
+    expect(canPlaceSetupStones(board, points)).toBe(false);
+    expect(result).toBe(board);
+    expect(board[4][0].stone).toBeNull();
+    expect(board[4][4].stone).toBeNull();
+  });
+
+  it("places the full wall when every point is empty", () => {
+    const board = createBoard(9);
+    const points = pointsAlongAxis({ x: 3, y: 1 }, { x: 3, y: 4 });
+
+    const result = placeSetupStones(board, points, "black");
+
+    expect(canPlaceSetupStones(board, points)).toBe(true);
+    expect(result.slice(1, 5).map((row) => row[3].stone)).toEqual([
+      "black",
+      "black",
+      "black",
+      "black",
+    ]);
+    expect(board[1][3].stone).toBeNull();
   });
 });
