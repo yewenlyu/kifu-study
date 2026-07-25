@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { CircleHelp, X } from "lucide-react";
 
 const SHORTCUTS = [
-  { action: "Toggle mode", keys: "M" },
-  { action: "Toggle stone", keys: "S" },
+  { action: "Toggle mode", keys: "S" },
+  { action: "Toggle stone", keys: "X" },
   { action: "Cycle tool", keys: "T" },
   { action: "Cycle board", keys: "B" },
   { action: "Clear board", keys: "C" },

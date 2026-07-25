@@ -40,7 +40,12 @@ export function ControlPanel({
   return (
     <aside className="control-panel" aria-label="Board controls">
       <div className="control-group">
-        <span className="control-label">Mode</span>
+        <span className="control-label">
+          Mode
+          <kbd className="shortcut-badge" aria-hidden="true">
+            S
+          </kbd>
+        </span>
         <div className="segmented wide">
           <SegmentedButton
             value="setup"
@@ -62,6 +67,9 @@ export function ControlPanel({
       <div className="control-group">
         <span className="control-label">
           {mode === "setup" ? "Stone" : "First move"}
+          <kbd className="shortcut-badge" aria-hidden="true">
+            X
+          </kbd>
         </span>
         <div className="segmented wide color-picker">
           <SegmentedButton
@@ -94,7 +102,12 @@ export function ControlPanel({
       </div>
 
       <div className="control-group">
-        <span className="control-label">Tool</span>
+        <span className="control-label">
+          Tool
+          <kbd className="shortcut-badge" aria-hidden="true">
+            T
+          </kbd>
+        </span>
         <div className="segmented tool-picker">
           <SegmentedButton
             value="stone"
@@ -124,7 +137,12 @@ export function ControlPanel({
       </div>
 
       <div className="control-group">
-        <span className="control-label">Board</span>
+        <span className="control-label">
+          Board
+          <kbd className="shortcut-badge" aria-hidden="true">
+            B
+          </kbd>
+        </span>
         <div className="segmented wide">
           {BOARD_SIZES.map((boardSize) => (
             <SegmentedButton

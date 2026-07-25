@@ -52,8 +52,8 @@ position editable, replayable, and easier to use while learning or teaching.
   Setup work. Clearing the board returns the application to Setup mode.
 - **Responsive controls** keep the complete workflow available on desktop and
   mobile.
-- **In-app shortcut help** is available from the question mark button in the
-  bottom-left corner.
+- **Shortcut cues** keep keyboard commands visible beside their controls, with
+  the complete reference available from the question mark button.
 
 ## Using The Board
 
@@ -81,13 +81,14 @@ position editable, replayable, and easier to use while learning or teaching.
 
 ## Shortcuts
 
-Open the question mark button in the bottom-left corner for the same reference
-inside the application.
+Compact key badges appear beside keyboard-driven controls. Open the question
+mark button in the bottom-left corner for the complete reference, including
+pointer gestures.
 
 | Action | macOS | Windows / Linux |
 | --- | --- | --- |
-| Toggle Setup / Simulation | `M` | `M` |
-| Toggle stone color / first move | `S` | `S` |
+| Toggle Setup / Simulation | `S` | `S` |
+| Toggle stone color / first move | `X` | `X` |
 | Cycle Stone / Triangle / Circle tool | `T` | `T` |
 | Cycle 9x9 / 13x13 / 19x19 board | `B` | `B` |
 | Clear the board and return to Setup | `C` | `C` |

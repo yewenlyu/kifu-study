@@ -94,23 +94,29 @@ export function BoardWorkspace({
             <div className="icon-group">
               <button
                 type="button"
-                className="icon-button"
+                className="icon-button shortcut-action"
                 aria-label="Undo"
                 title="Undo"
                 disabled={!canUndo(session)}
                 onClick={onUndo}
               >
                 <Undo2 size={18} />
+                <kbd className="shortcut-badge" aria-hidden="true">
+                  U
+                </kbd>
               </button>
               <button
                 type="button"
-                className="icon-button"
+                className="icon-button shortcut-action"
                 aria-label="Redo"
                 title="Redo"
                 disabled={history.future.length === 0}
                 onClick={onRedo}
               >
                 <Redo2 size={18} />
+                <kbd className="shortcut-badge" aria-hidden="true">
+                  R
+                </kbd>
               </button>
             </div>
 
@@ -150,13 +156,16 @@ export function BoardWorkspace({
 
             <button
               type="button"
-              className="icon-button"
+              className="icon-button shortcut-action"
               aria-label="Clear board"
               title="Clear board"
               disabled={!hasContent(present.board)}
               onClick={onClear}
             >
               <Trash2 size={18} />
+              <kbd className="shortcut-badge" aria-hidden="true">
+                C
+              </kbd>
             </button>
           </div>
         </div>

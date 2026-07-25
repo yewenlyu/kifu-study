@@ -32,7 +32,7 @@ describe("simulation mode", () => {
         .disabled,
     ).toBe(true);
 
-    fireEvent.keyDown(window, { key: "s" });
+    fireEvent.keyDown(window, { key: "x" });
     expect(screen.getByText(/to play · Move 3/)).toBeTruthy();
   });
 

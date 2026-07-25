@@ -222,15 +222,15 @@ Maintain strict separation of concerns across test layers:
 - Redo is `R`.
 - In Simulation mode, undo stops at the position where Simulation began and
   does not undo earlier Setup actions.
-- `M` toggles Setup and Simulation.
-- `S` toggles stone color, or the first player before simulation begins.
+- `S` toggles Setup and Simulation.
+- `X` toggles stone color, or the first player before simulation begins.
 - `T` cycles Stone, Triangle, and Circle tools.
 - `B` cycles 9x9, 13x13, and 19x19 boards.
 - Clearing the board, including with `C`, switches to Setup mode.
-- Keep shortcuts documented in the README, but do not add visible shortcut
-  cues to the application controls.
-- The fixed question mark button in the bottom-left is the only in-app shortcut
-  reference and opens a compact, dismissible shortcut popover.
+- Keep shortcuts documented in the README and show compact, always-visible key
+  badges beside the controls for `S`, `X`, `T`, `B`, `U`, `R`, and `C`.
+- The fixed question mark button in the bottom-left opens the complete,
+  dismissible shortcut reference, including pointer gestures.
 
 All board-changing actions should participate in the existing snapshot history
 unless a product requirement explicitly says otherwise.

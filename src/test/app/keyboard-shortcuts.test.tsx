@@ -12,7 +12,7 @@ describe("keyboard shortcuts", () => {
   it("supports mode, color, tool, board, undo, and redo commands", () => {
     renderApp();
 
-    fireEvent.keyDown(window, { key: "s" });
+    fireEvent.keyDown(window, { key: "x" });
     expect(isPressed(screen.getByRole("button", { name: "White" }))).toBe(true);
 
     fireEvent.keyDown(window, { key: "t" });
@@ -29,15 +29,17 @@ describe("keyboard shortcuts", () => {
     ).toBe(true);
 
     fireEvent.keyDown(window, { key: "m" });
+    expect(isPressed(screen.getByRole("button", { name: "Setup" }))).toBe(true);
+    fireEvent.keyDown(window, { key: "s" });
     expect(
       isPressed(screen.getByRole("button", { name: "Simulation" })),
     ).toBe(true);
-    fireEvent.keyDown(window, { key: "s" });
+    fireEvent.keyDown(window, { key: "x" });
     expect(isPressed(screen.getByRole("button", { name: "White" }))).toBe(true);
     expect(isPressed(screen.getByRole("button", { name: "Black" }))).toBe(
       false,
     );
-    fireEvent.keyDown(window, { key: "m" });
+    fireEvent.keyDown(window, { key: "s" });
     expect(isPressed(screen.getByRole("button", { name: "Setup" }))).toBe(true);
 
     fireEvent.keyDown(window, { key: "b" });
@@ -91,7 +93,7 @@ describe("keyboard shortcuts", () => {
     container.append(...editableElements);
 
     for (const element of editableElements) {
-      fireEvent.keyDown(element, { key: "s" });
+      fireEvent.keyDown(element, { key: "x" });
     }
     for (const ignoredState of [
       { metaKey: true },
@@ -99,11 +101,11 @@ describe("keyboard shortcuts", () => {
       { altKey: true },
       { repeat: true },
     ]) {
-      fireEvent.keyDown(window, { key: "s", ...ignoredState });
+      fireEvent.keyDown(window, { key: "x", ...ignoredState });
     }
     expect(isPressed(screen.getByRole("button", { name: "Black" }))).toBe(true);
 
-    fireEvent.keyDown(window, { key: "s" });
+    fireEvent.keyDown(window, { key: "x" });
     expect(isPressed(screen.getByRole("button", { name: "White" }))).toBe(true);
   });
 });

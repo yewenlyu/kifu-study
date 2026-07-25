@@ -19,6 +19,12 @@ test("keeps every control in two columns without page overflow", async ({
   }));
   expect(pageWidth.scroll).toBeLessThanOrEqual(pageWidth.client);
 
+  const shortcutBadges = page.locator(".shortcut-badge");
+  await expect(shortcutBadges).toHaveText(["S", "X", "T", "B", "U", "R", "C"]);
+  for (const badge of await shortcutBadges.all()) {
+    await expect(badge).toBeVisible();
+  }
+
   const help = page.getByRole("button", { name: "Keyboard shortcuts" });
   await expect(help).toBeInViewport();
   expect(

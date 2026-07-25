@@ -49,14 +49,14 @@ export function useKeyboardShortcuts({
           event.preventDefault();
           dispatch({ type: "redo" });
           break;
-        case "m":
+        case "s":
           event.preventDefault();
           dispatch({
             type: "mode-changed",
             mode: session.mode === "setup" ? "simulation" : "setup",
           });
           break;
-        case "s":
+        case "x":
           event.preventDefault();
           if (session.mode === "setup") {
             dispatch({
