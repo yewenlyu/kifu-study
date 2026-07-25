@@ -6,6 +6,7 @@ import {
   placeSetupStones,
   playMove,
   pointsAlongAxis,
+  pointsAlongOrthogonalPath,
   removePoint,
   toggleMark,
   type Board,
@@ -152,6 +153,36 @@ describe("setup drag placement", () => {
     expect(pointsAlongAxis({ x: 1, y: 2 }, { x: 5, y: 4 })).toEqual(
       [],
     );
+  });
+
+  it("routes diagonal movement through a right-angle corner", () => {
+    expect(
+      pointsAlongOrthogonalPath(
+        { x: 1, y: 1 },
+        { x: 4, y: 3 },
+        "horizontal",
+      ),
+    ).toEqual([
+      { x: 1, y: 1 },
+      { x: 2, y: 1 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+      { x: 4, y: 2 },
+      { x: 4, y: 3 },
+    ]);
+    expect(
+      pointsAlongOrthogonalPath(
+        { x: 4, y: 3 },
+        { x: 2, y: 5 },
+        "vertical",
+      ),
+    ).toEqual([
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 4, y: 5 },
+      { x: 3, y: 5 },
+      { x: 2, y: 5 },
+    ]);
   });
 
   it("cancels the entire placement when any point is occupied", () => {

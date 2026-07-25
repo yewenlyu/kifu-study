@@ -28,11 +28,12 @@ import {
   placeSetupStone,
   placeSetupStones,
   playMove,
-  pointsAlongAxis,
+  pointsAlongOrthogonalPath,
   removePoint,
   toggleMark,
   type Board,
   type BoardSize,
+  type GridAxis,
   type Mark,
   type Point,
   type StoneColor,
@@ -70,14 +71,13 @@ interface BoardPan {
   dragged: boolean;
 }
 
-type DragAxis = "horizontal" | "vertical";
-
 interface SetupPointerDrag {
   pointerId: number;
   startPoint: Point;
   startClientX: number;
   startClientY: number;
-  axis: DragAxis | null;
+  endPoint: Point;
+  axis: GridAxis | null;
   points: Point[];
   color: StoneColor;
   canceled: boolean;
@@ -127,6 +127,21 @@ function starPoints(size: BoardSize): Point[] {
 
   const positions = size === 13 ? [3, 6, 9] : [3, 9, 15];
   return positions.flatMap((y) => positions.map((x) => ({ x, y })));
+}
+
+function mergePoints(points: Point[], nextPoints: Point[]): Point[] {
+  const seen = new Set(points.map(({ x, y }) => `${x}:${y}`));
+  const merged = [...points];
+
+  for (const point of nextPoints) {
+    const key = `${point.x}:${point.y}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(point);
+    }
+  }
+
+  return merged;
 }
 
 interface SegmentedButtonProps<T extends string | number> {
@@ -347,6 +362,7 @@ function GoBoard({
       startPoint: point,
       startClientX: event.clientX,
       startClientY: event.clientY,
+      endPoint: point,
       axis: null,
       points: startedOccupied ? [] : [point],
       color: selectedColor,
@@ -377,11 +393,7 @@ function GoBoard({
       return;
     }
 
-    if (
-      drag.startPoint.x === point.x &&
-      drag.startPoint.y === point.y &&
-      drag.axis === null
-    ) {
+    if (drag.endPoint.x === point.x && drag.endPoint.y === point.y) {
       return;
     }
 
@@ -390,25 +402,39 @@ function GoBoard({
       return;
     }
 
-    if (drag.axis === null) {
-      drag.axis =
-        Math.abs(event.clientX - drag.startClientX) >=
-        Math.abs(event.clientY - drag.startClientY)
+    const movedHorizontally = drag.endPoint.x !== point.x;
+    const movedVertically = drag.endPoint.y !== point.y;
+    const firstAxis =
+      drag.axis ??
+      (movedHorizontally && movedVertically
+        ? Math.abs(event.clientX - drag.startClientX) >=
+          Math.abs(event.clientY - drag.startClientY)
+          ? "horizontal"
+          : "vertical"
+        : movedHorizontally
+          ? "horizontal"
+          : "vertical");
+    const segment = pointsAlongOrthogonalPath(
+      drag.endPoint,
+      point,
+      firstAxis,
+    );
+
+    drag.endPoint = point;
+    drag.axis =
+      movedHorizontally && movedVertically
+        ? firstAxis === "horizontal"
+          ? "vertical"
+          : "horizontal"
+        : movedHorizontally
           ? "horizontal"
           : "vertical";
-    }
 
-    const endPoint =
-      drag.axis === "horizontal"
-        ? { x: point.x, y: drag.startPoint.y }
-        : { x: drag.startPoint.x, y: point.y };
-    const points = pointsAlongAxis(drag.startPoint, endPoint);
-
-    if (!canPlaceSetupStones(board, points)) {
+    if (!canPlaceSetupStones(board, segment)) {
       drag.points = [];
       drag.canceled = true;
     } else {
-      drag.points = points;
+      drag.points = mergePoints(drag.points, segment);
     }
 
     setSetupDragPreview({

@@ -30,8 +30,8 @@ position editable, replayable, and easier to use while learning or teaching.
 ## Features
 
 - **Setup mode** places black or white stones in any order without applying Go
-  rules. Left-drag with the Stone tool to preview and place a straight
-  horizontal or vertical wall on release. Starting on or crossing an occupied
+  rules. Left-drag with the Stone tool to preview and place an orthogonal path
+  that can make right-angle turns. Starting on or crossing an occupied
   intersection cancels the drag. Select a stone and press Delete or Backspace
   to remove it.
 - **Simulation mode** alternates turns from a chosen starting color, captures
@@ -59,8 +59,8 @@ position editable, replayable, and easier to use while learning or teaching.
 1. Choose a 9x9, 13x13, or 19x19 board.
 2. Stay in **Setup** mode.
 3. Select Black or White, then click or left-drag to place stones. Dragging
-   previews a horizontal or vertical wall and commits it on release; touching
-   an occupied intersection cancels the drag.
+   previews an orthogonal path with right-angle turns and commits it on
+   release; touching an occupied intersection cancels the drag.
 4. Select the triangle or circle tool to annotate intersections.
 5. With the Stone tool active, select a stone and press Delete or Backspace to
    remove it.

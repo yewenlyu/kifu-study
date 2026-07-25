@@ -3,6 +3,7 @@ export const BOARD_SIZES = [9, 13, 19] as const;
 export type BoardSize = (typeof BOARD_SIZES)[number];
 export type StoneColor = "black" | "white";
 export type Mark = "triangle" | "circle";
+export type GridAxis = "horizontal" | "vertical";
 
 export interface Cell {
   stone: StoneColor | null;
@@ -204,6 +205,26 @@ export function pointsAlongAxis(start: Point, end: Point): Point[] {
     x: Math.round(start.x + (deltaX * index) / steps),
     y: Math.round(start.y + (deltaY * index) / steps),
   }));
+}
+
+export function pointsAlongOrthogonalPath(
+  start: Point,
+  end: Point,
+  firstAxis: GridAxis,
+): Point[] {
+  if (start.x === end.x || start.y === end.y) {
+    return pointsAlongAxis(start, end);
+  }
+
+  const corner =
+    firstAxis === "horizontal"
+      ? { x: end.x, y: start.y }
+      : { x: start.x, y: end.y };
+
+  return [
+    ...pointsAlongAxis(start, corner),
+    ...pointsAlongAxis(corner, end).slice(1),
+  ];
 }
 
 export function removePoint(board: Board, point: Point): Board {
