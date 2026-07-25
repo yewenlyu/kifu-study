@@ -59,6 +59,7 @@ dependency cycles.
 | Simulation | Reject occupied moves and self-capture without advancing history | `domain/go/rules.test.ts`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx` |
 | Simulation | Clear captured stones' move numbers and labels, and update capture counts | `domain/go/rules.test.ts`; `simulation-mode.test.tsx` |
 | Board | Support 9x9, 13x13, and 19x19 grids and star points | `domain/go/model.test.ts`; `board-rendering.test.tsx` |
+| Board | Keep all four outer grid corners visibly joined | `board-rendering.test.tsx` |
 | Board | Keep stones tangent and white outlines equal to interior grid strokes | `board-rendering.test.tsx` |
 | Board | Render contrast-aware triangle and circle marks on any intersection | `domain/go/model.test.ts`; `diagram-marks.test.tsx` |
 | Board | Keep the board and content SVG-based at every zoom level | `board-rendering.test.tsx`; `board-controls.test.tsx` |
