@@ -98,8 +98,8 @@ const SHORTCUTS = [
   { action: "Cycle tool", keys: "T" },
   { action: "Cycle board", keys: "B" },
   { action: "Clear board", keys: "C" },
-  { action: "Undo", keys: "⌘/Ctrl Z" },
-  { action: "Redo", keys: "Shift + ⌘/Ctrl Z" },
+  { action: "Undo", keys: "U" },
+  { action: "Redo", keys: "R" },
   { action: "Remove stone", keys: "Delete / Backspace" },
   { action: "Deselect stone", keys: "Esc" },
   { action: "Pan board", keys: "Right-drag" },
@@ -1040,16 +1040,6 @@ export default function App() {
         return;
       }
 
-      if ((event.metaKey || event.ctrlKey) && key === "z") {
-        event.preventDefault();
-        if (event.shiftKey) {
-          redo();
-        } else {
-          undo();
-        }
-        return;
-      }
-
       if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) {
         return;
       }
@@ -1082,6 +1072,14 @@ export default function App() {
       }
 
       switch (key) {
+        case "u":
+          event.preventDefault();
+          undo();
+          break;
+        case "r":
+          event.preventDefault();
+          redo();
+          break;
         case "m":
           event.preventDefault();
           handleModeChange(mode === "setup" ? "simulation" : "setup");

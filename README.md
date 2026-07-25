@@ -88,8 +88,8 @@ inside the application.
 | Clear the board and return to Setup | `C` | `C` |
 | Remove selected setup stone | `Delete` / `Backspace` | `Delete` / `Backspace` |
 | Deselect the current stone | `Escape` | `Escape` |
-| Undo | `Command + Z` | `Ctrl + Z` |
-| Redo | `Command + Shift + Z` | `Ctrl + Shift + Z` |
+| Undo | `U` | `U` |
+| Redo | `R` | `R` |
 | Pan an oversized board | Right-drag | Right-drag |
 
 ## Quick Start

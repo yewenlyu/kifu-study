@@ -79,8 +79,8 @@ in `src/go.ts` and covering them in `src/go.test.ts`.
 
 - Right-drag pans only when the board is larger than its viewport.
 - The cursor changes to `grabbing` while right-button panning is active.
-- Undo is `Command/Ctrl + Z`.
-- Redo is `Command/Ctrl + Shift + Z`.
+- Undo is `U`.
+- Redo is `R`.
 - `M` toggles Setup and Simulation.
 - `S` toggles stone color, or the first player before simulation begins.
 - `T` cycles Stone, Triangle, and Circle tools.
