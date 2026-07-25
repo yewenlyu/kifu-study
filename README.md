@@ -84,6 +84,7 @@ inside the application.
 | Toggle stone color / first move | `S` | `S` |
 | Cycle Stone / Triangle / Circle tool | `T` | `T` |
 | Cycle 9x9 / 13x13 / 19x19 board | `B` | `B` |
+| Clear the board | `C` | `C` |
 | Remove selected setup stone | `Delete` / `Backspace` | `Delete` / `Backspace` |
 | Deselect the current stone | `Escape` | `Escape` |
 | Undo | `Command + Z` | `Ctrl + Z` |

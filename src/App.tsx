@@ -97,6 +97,7 @@ const SHORTCUTS = [
   { action: "Toggle stone", keys: "S" },
   { action: "Cycle tool", keys: "T" },
   { action: "Cycle board", keys: "B" },
+  { action: "Clear board", keys: "C" },
   { action: "Undo", keys: "⌘/Ctrl Z" },
   { action: "Redo", keys: "Shift + ⌘/Ctrl Z" },
   { action: "Remove stone", keys: "Delete / Backspace" },
@@ -1082,6 +1083,10 @@ export default function App() {
           );
           break;
         }
+        case "c":
+          event.preventDefault();
+          clearBoard();
+          break;
       }
     };
 
