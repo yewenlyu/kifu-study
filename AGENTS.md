@@ -50,6 +50,9 @@ in `src/go.ts` and covering them in `src/go.test.ts`.
 
 ## Test Requirements
 
+For every code change, invoke and follow the
+`superpowers:test-driven-development` skill before editing code.
+
 Every implemented feature requirement in this file must be traceable to
 automated tests. A feature change is incomplete unless:
 
