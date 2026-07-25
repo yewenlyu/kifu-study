@@ -15,7 +15,7 @@ describe("board rendering", () => {
     renderApp();
     const board = boardElement();
 
-    expect(screen.getByRole("heading", { name: "Kipu Study" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Kifu Study" })).toBeTruthy();
     expect(screen.getByLabelText("Board controls")).toBeTruthy();
     expect(board.getAttribute("viewBox")).toBe("0 0 720 720");
     expect(board.dataset.boardSize).toBe("19");

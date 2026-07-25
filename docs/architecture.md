@@ -1,6 +1,6 @@
-# Kipu Study Architecture
+# Kifu Study Architecture
 
-Kipu Study is a client-side modular monolith. It uses a functional core with a
+Kifu Study is a client-side modular monolith. It uses a functional core with a
 thin React and browser shell: rules and application transitions are pure, while
 DOM events and browser APIs stay at the edge.
 

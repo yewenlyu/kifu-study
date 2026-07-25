@@ -1,4 +1,4 @@
-# Testing Kipu Study
+# Testing Kifu Study
 
 The default quality gate is:
 

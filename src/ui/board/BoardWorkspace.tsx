@@ -57,7 +57,7 @@ export function BoardWorkspace({
 
   return (
     <main className="board-area">
-      <section className="board-frame" aria-label="Kipu Study board">
+      <section className="board-frame" aria-label="Kifu Study board">
         <div className="board-toolbar">
           <div className="turn-status" aria-live="polite">
             {mode === "setup" ? (

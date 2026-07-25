@@ -1,31 +1,31 @@
-# Kipu Study
+# Kifu Study
 
 A minimalist, vector-first Go board for composing positions and studying
 variations.
 
-[Open Kipu Study](https://kipu-study.vercel.app/)
+[Open Kifu Study](https://kifu-study.vercel.app/)
 
-Kipu Study turns a printed game record or teaching shape into an interactive
+Kifu Study turns a printed game record or teaching shape into an interactive
 board. Set up any position freely, then switch to simulation mode to play
 numbered moves with captures and alternating turns.
 
-![Kipu Study showing a zoomed 19 by 19 numbered Go position](docs/images/kipu-desktop.png)
+![Kifu Study showing an empty 19 by 19 Go board](docs/images/kifu-desktop.png)
 
-## Why Kipu Study
+## Why Kifu Study
 
-Traditional Kipu diagrams are compact and expressive, but they are static.
-Kipu Study keeps that quiet black-and-white visual language while making the
+Traditional Kifu diagrams are compact and expressive, but they are static.
+Kifu Study keeps that quiet black-and-white visual language while making the
 position editable, replayable, and easier to use while learning or teaching.
 
 <p align="center">
   <img
-    src="docs/images/reference-kipu.png"
-    alt="The printed Kipu reference used to compose the interactive example"
+    src="docs/images/reference-kifu.png"
+    alt="The printed Kifu reference used to compose the interactive example"
     width="620"
   />
 </p>
 
-<p align="center"><em>Reference Kipu supplied for this project.</em></p>
+<p align="center"><em>Reference Kifu supplied for this project.</em></p>
 
 ## Features
 
@@ -73,7 +73,7 @@ position editable, replayable, and easier to use while learning or teaching.
 1. Build the starting shape in Setup mode.
 2. Switch to **Simulation** mode.
 3. Choose whether Black or White moves first.
-4. Place moves normally. Kipu Study numbers each move, alternates colors, and
+4. Place moves normally. Kifu Study numbers each move, alternates colors, and
    removes captured groups.
 5. Right-click an intersection to clear its triangle or circle label without
    removing its numbered stone.
@@ -99,7 +99,7 @@ bottom-left corner for the complete reference, including pointer gestures.
 
 ## Quick Start
 
-Kipu Study currently requires Node.js 22.13 or newer.
+Kifu Study currently requires Node.js 22.13 or newer.
 
 ```sh
 npm install
@@ -125,7 +125,7 @@ working on one layer. See
 ## Deployment
 
 The production application is available at
-[kipu-study.vercel.app](https://kipu-study.vercel.app/).
+[kifu-study.vercel.app](https://kifu-study.vercel.app/).
 
 The site is public: anyone with the URL can use it without a Vercel account or
 an invitation. Sharing the application URL does not grant access to the Vercel
@@ -155,7 +155,7 @@ Not implemented yet:
 
 ## Architecture
 
-Kipu Study is a client-side React and TypeScript application built with Vite.
+Kifu Study is a client-side React and TypeScript application built with Vite.
 
 ```text
 src/

@@ -63,7 +63,7 @@ export default function App() {
           <span />
         </div>
         <div>
-          <h1>Kipu Study</h1>
+          <h1>Kifu Study</h1>
           <p>Go study board</p>
         </div>
       </header>
