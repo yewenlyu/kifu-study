@@ -153,6 +153,49 @@ describe("studySessionReducer", () => {
     expect(session.notice).toBe("");
   });
 
+  it("stops undo at the position where simulation began", () => {
+    const setupPoint = { x: 1, y: 1 };
+    const markPoint = { x: 2, y: 2 };
+    const setup = studySessionReducer(createStudySession(), {
+      type: "setup-stones-placed",
+      points: [setupPoint],
+      color: "black",
+    });
+    const marked = apply(
+      setup,
+      { type: "mode-changed", mode: "simulation" },
+      { type: "tool-changed", tool: "triangle" },
+      { type: "point-clicked", point: markPoint },
+      { type: "mode-changed", mode: "simulation" },
+    );
+
+    const atBoundary = studySessionReducer(marked, { type: "undo" });
+    expect(atBoundary.history.present.board[2][2].mark).toBeNull();
+    expect(atBoundary.history.present.board[1][1].stone).toBe("black");
+
+    const blocked = studySessionReducer(atBoundary, { type: "undo" });
+    expect(blocked.history).toBe(atBoundary.history);
+    expect(blocked.history.present.board[1][1].stone).toBe("black");
+  });
+
+  it("resets the simulation undo boundary with board-size history", () => {
+    const resized = apply(
+      createStudySession(),
+      {
+        type: "setup-stones-placed",
+        points: [{ x: 1, y: 1 }],
+        color: "black",
+      },
+      { type: "mode-changed", mode: "simulation" },
+      { type: "board-size-changed", size: 9 },
+      { type: "point-clicked", point: { x: 2, y: 2 } },
+    );
+
+    const undone = studySessionReducer(resized, { type: "undo" });
+    expect(undone.history.present.board[2][2].stone).toBeNull();
+    expect(undone.history.present.board).toHaveLength(9);
+  });
+
   it("reports self-capture without committing history", () => {
     const surrounded = [
       { x: 0, y: 1 },

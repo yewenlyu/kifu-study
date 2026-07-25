@@ -27,6 +27,7 @@ export interface StudySnapshot {
 export interface StudySession {
   size: BoardSize;
   mode: Mode;
+  simulationHistoryStart: number;
   selectedColor: StoneColor;
   firstColor: StoneColor;
   tool: Tool;
@@ -53,6 +54,7 @@ export function createStudySession(): StudySession {
   return {
     size,
     mode: "setup",
+    simulationHistoryStart: 0,
     selectedColor: "black",
     firstColor,
     tool: "stone",
@@ -63,4 +65,10 @@ export function createStudySession(): StudySession {
 
 export function isSimulationStarted(session: StudySession): boolean {
   return session.history.present.nextMoveNumber > 1;
+}
+
+export function canUndo(session: StudySession): boolean {
+  const historyStart =
+    session.mode === "simulation" ? session.simulationHistoryStart : 0;
+  return session.history.past.length > historyStart;
 }

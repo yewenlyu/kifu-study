@@ -17,6 +17,7 @@ import {
   undoHistory,
 } from "./history";
 import {
+  canUndo,
   createStudySnapshot,
   type Mode,
   type StudySession,
@@ -135,9 +136,14 @@ function handlePointClear(
 }
 
 function changeMode(session: StudySession, mode: Mode): StudySession {
+  const enteringSimulation =
+    mode === "simulation" && session.mode !== "simulation";
   const nextSession = {
     ...session,
     mode,
+    simulationHistoryStart: enteringSimulation
+      ? session.history.past.length
+      : session.simulationHistoryStart,
     tool: "stone" as const,
     notice: "",
   };
@@ -180,7 +186,9 @@ export function studySessionReducer(
       return {
         ...session,
         notice: "",
-        history: undoHistory(session.history),
+        history: canUndo(session)
+          ? undoHistory(session.history)
+          : session.history,
       };
     case "redo":
       return {
@@ -216,6 +224,7 @@ export function studySessionReducer(
       return {
         ...session,
         size: action.size,
+        simulationHistoryStart: 0,
         notice: "",
         history: createHistory(
           createStudySnapshot(action.size, session.firstColor),

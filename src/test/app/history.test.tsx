@@ -11,6 +11,25 @@ import { isPressed } from "./support/controls";
 import { renderApp } from "./support/render";
 
 describe("snapshot history", () => {
+  it("disables simulation undo before it can remove setup stones", () => {
+    renderApp();
+    placeSetupStone({ x: 4, y: 4 });
+    fireEvent.click(screen.getByRole("button", { name: "Simulation" }));
+    clickPoint({ x: 5, y: 5 });
+
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+
+    expect(stoneAt({ x: 4, y: 4 })?.dataset.stone).toBe("black");
+    expect(stoneAt({ x: 5, y: 5 })).toBeNull();
+    expect(
+      (screen.getByRole("button", { name: "Undo" }) as HTMLButtonElement)
+        .disabled,
+    ).toBe(true);
+
+    fireEvent.keyDown(window, { key: "u" });
+    expect(stoneAt({ x: 4, y: 4 })?.dataset.stone).toBe("black");
+  });
+
   it("clears the board, returns to setup, and makes the clear undoable", () => {
     renderApp();
     placeSetupStone({ x: 4, y: 4 });

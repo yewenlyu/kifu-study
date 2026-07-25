@@ -220,6 +220,8 @@ Maintain strict separation of concerns across test layers:
 - The cursor changes to `grabbing` while middle-button panning is active.
 - Undo is `U`.
 - Redo is `R`.
+- In Simulation mode, undo stops at the position where Simulation began and
+  does not undo earlier Setup actions.
 - `M` toggles Setup and Simulation.
 - `S` toggles stone color, or the first player before simulation begins.
 - `T` cycles Stone, Triangle, and Circle tools.

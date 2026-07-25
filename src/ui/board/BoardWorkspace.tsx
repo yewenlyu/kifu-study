@@ -6,8 +6,9 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import type {
-  StudySession,
+import {
+  canUndo,
+  type StudySession,
 } from "../../application/study-session";
 import {
   hasContent,
@@ -96,7 +97,7 @@ export function BoardWorkspace({
                 className="icon-button"
                 aria-label="Undo"
                 title="Undo"
-                disabled={history.past.length === 0}
+                disabled={!canUndo(session)}
                 onClick={onUndo}
               >
                 <Undo2 size={18} />
