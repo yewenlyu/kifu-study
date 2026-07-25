@@ -71,7 +71,7 @@ dependency cycles.
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
 | Navigation | Clear returns to Setup mode and remains undoable | `history.test.tsx` |
 | Navigation | Destructive board-size changes confirm, then reset zoom and history | `board-controls.test.tsx` |
-| Help | Keep `S`, `X`, `T`, `B`, `U`, `R`, and `C` badges visible beside their controls | `shortcut-cues.test.tsx`; `responsive.spec.ts` |
+| Help | Keep `S`, `X`, `T`, and `B` badges visible; reveal toolbar `U`, `R`, and `C` badges on hover or keyboard focus | `shortcut-cues.test.tsx`; `shortcut-cues.spec.ts`; `responsive.spec.ts` |
 | Help | Fixed question-mark control opens and dismisses the current shortcut reference | `shortcut-help.test.tsx`; `responsive.spec.ts` |
 | Responsive | Keep all four control groups in a two-column phone layout without page overflow | `responsive.spec.ts` |
 | Reliability | Avoid fresh browser console errors during critical workflows | Automatic fixture in `e2e/support/fixtures.ts` |

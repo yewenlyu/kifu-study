@@ -81,9 +81,9 @@ position editable, replayable, and easier to use while learning or teaching.
 
 ## Shortcuts
 
-Compact key badges appear beside keyboard-driven controls. Open the question
-mark button in the bottom-left corner for the complete reference, including
-pointer gestures.
+Compact key badges appear beside keyboard-driven controls, while toolbar
+badges appear on hover or keyboard focus. Open the question mark button in the
+bottom-left corner for the complete reference, including pointer gestures.
 
 | Action | macOS | Windows / Linux |
 | --- | --- | --- |

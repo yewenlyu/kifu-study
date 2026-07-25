@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { renderApp } from "./support/render";
 
 describe("shortcut cues", () => {
-  it("keeps every keyboard action's key visible beside its control", () => {
+  it("associates every keyboard action's key with its control", () => {
     renderApp();
 
     const controlPanel = screen.getByRole("complementary", {

@@ -18,14 +18,26 @@
 }
 
 .shortcut-action {
-  gap: 2px;
+  position: relative;
 }
 
 .shortcut-action .shortcut-badge {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
   min-width: 12px;
   height: 13px;
   padding: 0 2px;
   font-size: 8px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shortcut-action:hover .shortcut-badge,
+.shortcut-action:focus-visible .shortcut-badge {
+  visibility: visible;
+  opacity: 1;
 }
 
 .shortcut-action:disabled .shortcut-badge {
