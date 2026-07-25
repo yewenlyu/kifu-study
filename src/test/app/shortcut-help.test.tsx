@@ -12,6 +12,8 @@ describe("shortcut help", () => {
     fireEvent.click(trigger);
     const dialog = screen.getByRole("dialog", { name: "Keyboard shortcuts" });
     expect(within(dialog).getAllByRole("term")).toHaveLength(10);
+    expect(within(dialog).getByText("Middle-drag")).toBeTruthy();
+    expect(within(dialog).queryByText("Right-drag")).toBeNull();
     fireEvent.keyDown(document, { key: "a" });
     expect(screen.getByRole("dialog")).toBeTruthy();
 

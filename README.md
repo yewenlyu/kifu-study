@@ -43,7 +43,7 @@ position editable, replayable, and easier to use while learning or teaching.
 - **Three board sizes** support 9x9, 13x13, and 19x19 study.
 - **SVG rendering** keeps the board, stones, grid, and labels sharp at every
   zoom level.
-- **Right-drag panning** moves a zoomed board when it is larger than the
+- **Middle-button panning** moves a zoomed board when it is larger than the
   viewport.
 - **Undo and redo** cover placement, marks, moves, captures, and board clearing.
   Clearing the board returns the application to Setup mode.
@@ -90,7 +90,7 @@ inside the application.
 | Deselect the current stone | `Escape` | `Escape` |
 | Undo | `U` | `U` |
 | Redo | `R` | `R` |
-| Pan an oversized board | Right-drag | Right-drag |
+| Pan an oversized board | Middle-drag | Middle-drag |
 
 ## Quick Start
 

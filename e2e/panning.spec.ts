@@ -1,6 +1,6 @@
 import { expect, test } from "./support/fixtures";
 
-test("right-drag pans only an oversized board with a grabbing cursor", async ({
+test("middle-button drag pans only an oversized board with a grabbing cursor", async ({
   page,
 }) => {
   await page.goto("/");
@@ -31,7 +31,7 @@ test("right-drag pans only an oversized board with a grabbing cursor", async ({
   const startX = box.x + box.width * 0.7;
   const startY = Math.min(box.y + 100, viewport.height - 40);
   await page.mouse.move(startX, startY);
-  await page.mouse.down({ button: "right" });
+  await page.mouse.down({ button: "middle" });
   await expect(stage).toHaveClass(/is-panning/);
   await expect
     .poll(() => stage.evaluate((element) => getComputedStyle(element).cursor))
@@ -44,6 +44,6 @@ test("right-drag pans only an oversized board with a grabbing cursor", async ({
     .poll(() => stage.evaluate((element) => element.scrollLeft))
     .toBeGreaterThan(initialScrollLeft);
 
-  await page.mouse.up({ button: "right" });
+  await page.mouse.up({ button: "middle" });
   await expect(stage).not.toHaveClass(/is-panning/);
 });

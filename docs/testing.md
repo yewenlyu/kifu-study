@@ -65,12 +65,12 @@ dependency cycles.
 | Board | Keep the board and content SVG-based at every zoom level | `board-rendering.test.tsx`; `board-controls.test.tsx` |
 | History | Undo and redo placements, drag batches, marks, deletion, captures, and clearing | Component suites under `src/test/app/` |
 | History | Clear redo when a new branch is created | `application/study-session/history.test.ts`; `application/study-session/reducer.test.ts`; `history.test.tsx` |
-| Navigation | Pan only an oversized board with right-drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
+| Navigation | Pan only an oversized board with middle-button drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
 | Navigation | Enforce `U`, `R`, `M`, `S`, `T`, `B`, `C`, Delete, Backspace, and Escape | `keyboard-shortcuts.test.tsx` |
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
 | Navigation | Clear returns to Setup mode and remains undoable | `history.test.tsx` |
 | Navigation | Destructive board-size changes confirm, then reset zoom and history | `board-controls.test.tsx` |
-| Help | Fixed question-mark control opens and dismisses the shortcut reference | `shortcut-help.test.tsx`; `responsive.spec.ts` |
+| Help | Fixed question-mark control opens and dismisses the current shortcut reference | `shortcut-help.test.tsx`; `responsive.spec.ts` |
 | Responsive | Keep all four control groups in a two-column phone layout without page overflow | `responsive.spec.ts` |
 | Reliability | Avoid fresh browser console errors during critical workflows | Automatic fixture in `e2e/support/fixtures.ts` |
 | Architecture | Keep dependencies inward and source modules acyclic | `architecture.test.ts` |

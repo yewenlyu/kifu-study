@@ -20,7 +20,7 @@ export function useBoardPan() {
   const handlePointerDown = (
     event: ReactPointerEvent<HTMLDivElement>,
   ) => {
-    if (event.button !== 2) {
+    if (event.button !== 1) {
       return;
     }
 

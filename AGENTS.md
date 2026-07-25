@@ -216,8 +216,8 @@ Maintain strict separation of concerns across test layers:
 
 ### Navigation And History
 
-- Right-drag pans only when the board is larger than its viewport.
-- The cursor changes to `grabbing` while right-button panning is active.
+- Middle-button drag pans only when the board is larger than its viewport.
+- The cursor changes to `grabbing` while middle-button panning is active.
 - Undo is `U`.
 - Redo is `R`.
 - `M` toggles Setup and Simulation.

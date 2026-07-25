@@ -11,7 +11,7 @@ const SHORTCUTS = [
   { action: "Redo", keys: "R" },
   { action: "Remove stone", keys: "Delete / Backspace" },
   { action: "Deselect stone", keys: "Esc" },
-  { action: "Pan board", keys: "Right-drag" },
+  { action: "Pan board", keys: "Middle-drag" },
 ] as const;
 
 export function ShortcutHelp() {
