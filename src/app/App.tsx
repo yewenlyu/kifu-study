@@ -20,6 +20,7 @@ export default function App() {
     createStudySession,
   );
   const [zoom, setZoom] = useState(100);
+  const [showCoordinates, setShowCoordinates] = useState(false);
   const { history } = session;
 
   useEffect(() => {
@@ -48,11 +49,16 @@ export default function App() {
     },
     [history.present.board],
   );
+  const handleCoordinatesToggle = useCallback(
+    () => setShowCoordinates((current) => !current),
+    [],
+  );
 
   useKeyboardShortcuts({
     session,
     dispatch,
     onBoardSizeChange: handleSizeChange,
+    onCoordinatesToggle: handleCoordinatesToggle,
   });
 
   return (
@@ -94,7 +100,9 @@ export default function App() {
         <BoardWorkspace
           session={session}
           zoom={zoom}
+          showCoordinates={showCoordinates}
           onZoomChange={setZoom}
+          onCoordinatesToggle={handleCoordinatesToggle}
           onUndo={() => dispatch({ type: "undo" })}
           onRedo={() => dispatch({ type: "redo" })}
           onClear={() => dispatch({ type: "board-cleared" })}

@@ -9,6 +9,7 @@ test("reveals toolbar shortcut cues on hover and keyboard focus", async ({
   for (const [name, key] of [
     ["Undo", "U"],
     ["Redo", "R"],
+    ["Show coordinates", "N"],
     ["Clear board", "C"],
   ] as const) {
     const button = page.getByRole("button", { name });

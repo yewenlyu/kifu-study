@@ -15,12 +15,14 @@ interface KeyboardShortcutOptions {
   session: StudySession;
   dispatch: Dispatch<StudyAction>;
   onBoardSizeChange: (size: BoardSize) => void;
+  onCoordinatesToggle: () => void;
 }
 
 export function useKeyboardShortcuts({
   session,
   dispatch,
   onBoardSizeChange,
+  onCoordinatesToggle,
 }: KeyboardShortcutOptions) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -91,10 +93,14 @@ export function useKeyboardShortcuts({
           event.preventDefault();
           dispatch({ type: "board-cleared" });
           break;
+        case "n":
+          event.preventDefault();
+          onCoordinatesToggle();
+          break;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dispatch, onBoardSizeChange, session]);
+  }, [dispatch, onBoardSizeChange, onCoordinatesToggle, session]);
 }

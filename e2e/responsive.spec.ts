@@ -25,10 +25,44 @@ test("keeps every control in two columns without page overflow", async ({
     await expect(badge).toBeVisible();
   }
   const toolbarBadges = page.locator(".shortcut-action .shortcut-badge");
-  await expect(toolbarBadges).toHaveText(["U", "R", "C"]);
+  await expect(toolbarBadges).toHaveText(["U", "R", "N", "C"]);
   for (const badge of await toolbarBadges.all()) {
     await expect(badge).toBeHidden();
   }
+
+  const gridBeforeCoordinates = await page.evaluate(() => {
+    const bounds = document
+      .querySelector(".grid-lines")!
+      .getBoundingClientRect();
+    return { height: bounds.height, width: bounds.width };
+  });
+  await page.keyboard.press("n");
+  const gridWithCoordinates = await page.evaluate(() => {
+    const bounds = document
+      .querySelector(".grid-lines")!
+      .getBoundingClientRect();
+    return { height: bounds.height, width: bounds.width };
+  });
+  expect(Math.abs(gridWithCoordinates.width - gridBeforeCoordinates.width)).toBe(
+    0,
+  );
+  expect(
+    Math.abs(gridWithCoordinates.height - gridBeforeCoordinates.height),
+  ).toBe(0);
+  const coordinateHeight = await page.evaluate(
+    () =>
+      document
+        .querySelector('[data-coordinate-edge="top"]')!
+        .getBoundingClientRect().height,
+  );
+  expect(coordinateHeight).toBeGreaterThanOrEqual(8);
+  const pageWidthWithCoordinates = await page.evaluate(() => ({
+    client: document.documentElement.clientWidth,
+    scroll: document.documentElement.scrollWidth,
+  }));
+  expect(pageWidthWithCoordinates.scroll).toBeLessThanOrEqual(
+    pageWidthWithCoordinates.client,
+  );
 
   const help = page.getByRole("button", { name: "Keyboard shortcuts" });
   await expect(help).toBeInViewport();
@@ -40,5 +74,5 @@ test("keeps every control in two columns without page overflow", async ({
   await help.click();
   const dialog = page.getByRole("dialog", { name: "Keyboard shortcuts" });
   await expect(dialog).toBeInViewport();
-  await expect(dialog.getByRole("term")).toHaveCount(9);
+  await expect(dialog.getByRole("term")).toHaveCount(10);
 });

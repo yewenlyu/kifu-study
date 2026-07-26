@@ -17,7 +17,11 @@ describe("board rendering", () => {
 
     expect(screen.getByRole("heading", { name: "Kifu Study" })).toBeTruthy();
     expect(screen.getByLabelText("Board controls")).toBeTruthy();
-    expect(board.getAttribute("viewBox")).toBe("0 0 720 720");
+    const [, , viewBoxWidth, viewBoxHeight] = board
+      .getAttribute("viewBox")!
+      .split(" ")
+      .map(Number);
+    expect(viewBoxWidth).toBe(viewBoxHeight);
     expect(board.dataset.boardSize).toBe("19");
     expect(board.querySelectorAll(".grid-lines line")).toHaveLength(38);
     expect(board.querySelectorAll(".grid-lines > circle")).toHaveLength(9);
@@ -68,6 +72,92 @@ describe("board rendering", () => {
     expect(boardElement().querySelectorAll(".hit-targets circle")).toHaveLength(
       361,
     );
+  });
+
+  it("keeps coordinates hidden by default and shows conventional labels when requested", () => {
+    renderApp();
+    const board = boardElement();
+    const toggle = screen.getByRole("button", { name: "Show coordinates" });
+    const hiddenViewBox = board.getAttribute("viewBox");
+
+    expect(board.querySelector(".board-coordinates")).toBeNull();
+    expect(toggle.getAttribute("aria-pressed")).toBe("false");
+
+    fireEvent.click(toggle);
+
+    const topLabels = Array.from(
+      board.querySelectorAll<SVGTextElement>(
+        '[data-coordinate-edge="top"]',
+      ),
+    );
+    const leftLabels = Array.from(
+      board.querySelectorAll<SVGTextElement>(
+        '[data-coordinate-edge="left"]',
+      ),
+    );
+    expect(topLabels.map((label) => label.textContent)).toEqual([
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+    ]);
+    expect(leftLabels.map((label) => label.textContent)).toEqual([
+      "19",
+      "18",
+      "17",
+      "16",
+      "15",
+      "14",
+      "13",
+      "12",
+      "11",
+      "10",
+      "9",
+      "8",
+      "7",
+      "6",
+      "5",
+      "4",
+      "3",
+      "2",
+      "1",
+    ]);
+    expect(
+      board.querySelectorAll('[data-coordinate-edge="bottom"]'),
+    ).toHaveLength(19);
+    expect(
+      board.querySelectorAll('[data-coordinate-edge="right"]'),
+    ).toHaveLength(19);
+    expect(
+      screen.getByRole("button", { name: "Hide coordinates" }).getAttribute(
+        "aria-pressed",
+      ),
+    ).toBe("true");
+    expect(board.getAttribute("viewBox")).toBe(hiddenViewBox);
+    expect(Number(topLabels[0].getAttribute("y"))).toBeGreaterThan(0);
+    expect(Number(leftLabels[0].getAttribute("x"))).toBeGreaterThan(0);
+
+    placeSetupStone({ x: 0, y: 0 });
+    expect(stoneAt({ x: 0, y: 0 })?.dataset.stone).toBe("black");
+
+    fireEvent.click(screen.getByRole("button", { name: "Hide coordinates" }));
+    expect(board.querySelector(".board-coordinates")).toBeNull();
+    expect(board.getAttribute("viewBox")).toBe(hiddenViewBox);
   });
 
   it("keeps stones tangent and white outlines equal to interior grid lines", () => {

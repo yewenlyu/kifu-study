@@ -2,6 +2,8 @@ import type { BoardSize, Point } from "../../domain/go";
 
 export const BOARD_CANVAS_SIZE = 720;
 export const BOARD_PADDING = 42;
+export const COORDINATE_GUTTER = 18;
+export const COORDINATE_LABEL_GAP = 10;
 export const GRID_STROKE_WIDTH = 1.55;
 export const EDGE_GRID_STROKE_WIDTH = 2.8;
 
@@ -51,11 +53,13 @@ export function pointFromClientPosition(
   bounds: Pick<DOMRect, "left" | "top" | "width" | "height">,
   size: BoardSize,
   step: number,
+  canvasGutter = 0,
 ): Point | null {
+  const viewBoxSize = BOARD_CANVAS_SIZE + canvasGutter * 2;
   const localX =
-    ((clientX - bounds.left) * BOARD_CANVAS_SIZE) / bounds.width;
+    -canvasGutter + ((clientX - bounds.left) * viewBoxSize) / bounds.width;
   const localY =
-    ((clientY - bounds.top) * BOARD_CANVAS_SIZE) / bounds.height;
+    -canvasGutter + ((clientY - bounds.top) * viewBoxSize) / bounds.height;
   const x = Math.round((localX - BOARD_PADDING) / step);
   const y = Math.round((localY - BOARD_PADDING) / step);
 

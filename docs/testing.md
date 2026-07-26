@@ -62,12 +62,13 @@ dependency cycles.
 | Board | Keep all four outer grid corners visibly joined | `board-rendering.test.tsx` |
 | Board | Keep stones tangent and white outlines equal to interior grid strokes | `board-rendering.test.tsx` |
 | Board | Render contrast-aware triangle and circle marks on any intersection | `domain/go/model.test.ts`; `diagram-marks.test.tsx` |
+| Board | Keep coordinates hidden by default and toggle close conventional edge labels without resizing the grid or disrupting placement | `board-rendering.test.tsx`; `keyboard-shortcuts.test.tsx`; `responsive.spec.ts` |
 | Board | Keep the board and content SVG-based at every zoom level | `board-rendering.test.tsx`; `board-controls.test.tsx` |
 | History | Undo and redo placements, drag batches, marks, deletion, captures, and clearing | Component suites under `src/test/app/` |
 | History | Stop Simulation undo at its starting position without undoing Setup actions | `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | History | Clear redo when a new branch is created | `application/study-session/history.test.ts`; `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | Navigation | Pan only an oversized board with middle-button drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
-| Navigation | Enforce `U`, `R`, `S`, `X`, `T`, `B`, and `C`, with no Delete or Backspace removal | `keyboard-shortcuts.test.tsx` |
+| Navigation | Enforce `U`, `R`, `S`, `X`, `T`, `B`, `N`, and `C`, with no Delete or Backspace removal | `keyboard-shortcuts.test.tsx` |
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
 | Navigation | Clear returns to Setup mode and remains undoable | `history.test.tsx` |
 | Navigation | Destructive board-size changes confirm, then reset zoom and history | `board-controls.test.tsx` |

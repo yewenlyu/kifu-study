@@ -75,6 +75,11 @@
   background: #ececec;
 }
 
+.coordinate-toggle[aria-pressed="true"] {
+  background: #e7e7e7;
+  color: #111111;
+}
+
 .icon-button:disabled {
   color: #b7b7b7;
   cursor: default;
@@ -114,6 +119,16 @@
 .grid-lines {
   stroke: #111111;
   shape-rendering: geometricPrecision;
+}
+
+.board-coordinates {
+  fill: #555555;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  user-select: none;
 }
 
 .point-preview {
@@ -168,6 +183,10 @@
 }
 
 @media (max-width: 620px) {
+  .board-coordinates {
+    font-size: 17px;
+  }
+
   .board-area {
     padding: 10px;
   }

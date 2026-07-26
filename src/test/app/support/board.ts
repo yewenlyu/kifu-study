@@ -33,9 +33,16 @@ function boardSize(board = boardElement()): BoardSize {
 
 export function clientPoint(point: Point, board = boardElement()) {
   const step = (CANVAS_SIZE - PADDING * 2) / (boardSize(board) - 1);
+  const [viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight] = (
+    board.getAttribute("viewBox") ?? `0 0 ${CANVAS_SIZE} ${CANVAS_SIZE}`
+  )
+    .split(" ")
+    .map(Number);
   return {
-    clientX: PADDING + point.x * step,
-    clientY: PADDING + point.y * step,
+    clientX:
+      ((PADDING + point.x * step - viewBoxX) * CANVAS_SIZE) / viewBoxWidth,
+    clientY:
+      ((PADDING + point.y * step - viewBoxY) * CANVAS_SIZE) / viewBoxHeight,
   };
 }
 
