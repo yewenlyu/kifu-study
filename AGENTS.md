@@ -210,7 +210,8 @@ Maintain strict separation of concerns across test layers:
 - Board sizes are 9x9, 13x13, and 19x19.
 - Board coordinates are hidden by default. `N` toggles balanced edge labels
   using Go columns `A` through `T` without `I` and rows numbered from the
-  bottom.
+  bottom. Toggling coordinates must not resize the board, and labels stay
+  close to the edge stones without overlapping them.
 - Stones are tangent: a stone's outer diameter equals one grid spacing.
 - White stone outlines use the same stroke weight as interior grid lines.
 - Triangle and circle marks must maintain visible contrast on black stones,

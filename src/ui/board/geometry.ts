@@ -2,7 +2,8 @@ import type { BoardSize, Point } from "../../domain/go";
 
 export const BOARD_CANVAS_SIZE = 720;
 export const BOARD_PADDING = 42;
-export const COORDINATE_GUTTER = 28;
+export const COORDINATE_GUTTER = 18;
+export const COORDINATE_LABEL_GAP = 10;
 export const GRID_STROKE_WIDTH = 1.55;
 export const EDGE_GRID_STROKE_WIDTH = 2.8;
 

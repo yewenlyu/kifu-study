@@ -17,7 +17,11 @@ describe("board rendering", () => {
 
     expect(screen.getByRole("heading", { name: "Kifu Study" })).toBeTruthy();
     expect(screen.getByLabelText("Board controls")).toBeTruthy();
-    expect(board.getAttribute("viewBox")).toBe("0 0 720 720");
+    const [, , viewBoxWidth, viewBoxHeight] = board
+      .getAttribute("viewBox")!
+      .split(" ")
+      .map(Number);
+    expect(viewBoxWidth).toBe(viewBoxHeight);
     expect(board.dataset.boardSize).toBe("19");
     expect(board.querySelectorAll(".grid-lines line")).toHaveLength(38);
     expect(board.querySelectorAll(".grid-lines > circle")).toHaveLength(9);
@@ -74,6 +78,7 @@ describe("board rendering", () => {
     renderApp();
     const board = boardElement();
     const toggle = screen.getByRole("button", { name: "Show coordinates" });
+    const hiddenViewBox = board.getAttribute("viewBox");
 
     expect(board.querySelector(".board-coordinates")).toBeNull();
     expect(toggle.getAttribute("aria-pressed")).toBe("false");
@@ -81,14 +86,16 @@ describe("board rendering", () => {
     fireEvent.click(toggle);
 
     const topLabels = Array.from(
-      board.querySelectorAll('[data-coordinate-edge="top"]'),
-      (label) => label.textContent,
+      board.querySelectorAll<SVGTextElement>(
+        '[data-coordinate-edge="top"]',
+      ),
     );
     const leftLabels = Array.from(
-      board.querySelectorAll('[data-coordinate-edge="left"]'),
-      (label) => label.textContent,
+      board.querySelectorAll<SVGTextElement>(
+        '[data-coordinate-edge="left"]',
+      ),
     );
-    expect(topLabels).toEqual([
+    expect(topLabels.map((label) => label.textContent)).toEqual([
       "A",
       "B",
       "C",
@@ -109,7 +116,7 @@ describe("board rendering", () => {
       "S",
       "T",
     ]);
-    expect(leftLabels).toEqual([
+    expect(leftLabels.map((label) => label.textContent)).toEqual([
       "19",
       "18",
       "17",
@@ -141,17 +148,16 @@ describe("board rendering", () => {
         "aria-pressed",
       ),
     ).toBe("true");
-    const [viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight] = board
-      .getAttribute("viewBox")!
-      .split(" ")
-      .map(Number);
-    expect(viewBoxX).toBeLessThan(0);
-    expect(viewBoxY).toBeLessThan(0);
-    expect(viewBoxWidth).toBeGreaterThan(CANVAS_SIZE);
-    expect(viewBoxHeight).toBeGreaterThan(CANVAS_SIZE);
+    expect(board.getAttribute("viewBox")).toBe(hiddenViewBox);
+    expect(Number(topLabels[0].getAttribute("y"))).toBeGreaterThan(0);
+    expect(Number(leftLabels[0].getAttribute("x"))).toBeGreaterThan(0);
 
     placeSetupStone({ x: 0, y: 0 });
     expect(stoneAt({ x: 0, y: 0 })?.dataset.stone).toBe("black");
+
+    fireEvent.click(screen.getByRole("button", { name: "Hide coordinates" }));
+    expect(board.querySelector(".board-coordinates")).toBeNull();
+    expect(board.getAttribute("viewBox")).toBe(hiddenViewBox);
   });
 
   it("keeps stones tangent and white outlines equal to interior grid lines", () => {

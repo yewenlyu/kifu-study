@@ -30,7 +30,25 @@ test("keeps every control in two columns without page overflow", async ({
     await expect(badge).toBeHidden();
   }
 
+  const gridBeforeCoordinates = await page.evaluate(() => {
+    const bounds = document
+      .querySelector(".grid-lines")!
+      .getBoundingClientRect();
+    return { height: bounds.height, width: bounds.width };
+  });
   await page.keyboard.press("n");
+  const gridWithCoordinates = await page.evaluate(() => {
+    const bounds = document
+      .querySelector(".grid-lines")!
+      .getBoundingClientRect();
+    return { height: bounds.height, width: bounds.width };
+  });
+  expect(Math.abs(gridWithCoordinates.width - gridBeforeCoordinates.width)).toBe(
+    0,
+  );
+  expect(
+    Math.abs(gridWithCoordinates.height - gridBeforeCoordinates.height),
+  ).toBe(0);
   const coordinateHeight = await page.evaluate(
     () =>
       document

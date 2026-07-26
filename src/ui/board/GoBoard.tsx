@@ -13,6 +13,7 @@ import type {
 import {
   BOARD_CANVAS_SIZE,
   COORDINATE_GUTTER,
+  COORDINATE_LABEL_GAP,
   BOARD_PADDING,
   EDGE_GRID_STROKE_WIDTH,
   GRID_STROKE_WIDTH,
@@ -68,13 +69,16 @@ export function GoBoard({
     mode,
     tool,
     selectedColor,
-    canvasGutter: showCoordinates ? COORDINATE_GUTTER : 0,
+    canvasGutter: COORDINATE_GUTTER,
     onCommit: onSetupStoneDragCommit,
   });
   const coordinate = (index: number) => boardCoordinate(index, step);
   const previewColor = mode === "setup" ? selectedColor : nextColor;
-  const canvasGutter = showCoordinates ? COORDINATE_GUTTER : 0;
-  const viewBoxSize = BOARD_CANVAS_SIZE + canvasGutter * 2;
+  const viewBoxSize = BOARD_CANVAS_SIZE + COORDINATE_GUTTER * 2;
+  const nearEdgeLabelPosition =
+    BOARD_PADDING - stoneRadius - COORDINATE_LABEL_GAP;
+  const farEdgeLabelPosition =
+    BOARD_CANVAS_SIZE - nearEdgeLabelPosition;
   const columnLabels = "ABCDEFGHJKLMNOPQRST".slice(0, size);
 
   const renderMark = (
@@ -114,7 +118,7 @@ export function GoBoard({
         width: `${zoom}%`,
         maxWidth: `${(820 * zoom) / 100}px`,
       }}
-      viewBox={`${-canvasGutter} ${-canvasGutter} ${viewBoxSize} ${viewBoxSize}`}
+      viewBox={`${-COORDINATE_GUTTER} ${-COORDINATE_GUTTER} ${viewBoxSize} ${viewBoxSize}`}
       role="img"
       aria-label={`${size} by ${size} Go board`}
       data-board-size={size}
@@ -124,8 +128,8 @@ export function GoBoard({
       {...pointerHandlers}
     >
       <rect
-        x={-canvasGutter}
-        y={-canvasGutter}
+        x={-COORDINATE_GUTTER}
+        y={-COORDINATE_GUTTER}
         width={viewBoxSize}
         height={viewBoxSize}
         fill="#ffffff"
@@ -139,7 +143,7 @@ export function GoBoard({
               <g key={label}>
                 <text
                   x={position}
-                  y={-COORDINATE_GUTTER / 2}
+                  y={nearEdgeLabelPosition}
                   textAnchor="middle"
                   dominantBaseline="central"
                   data-coordinate-edge="top"
@@ -148,7 +152,7 @@ export function GoBoard({
                 </text>
                 <text
                   x={position}
-                  y={BOARD_CANVAS_SIZE + COORDINATE_GUTTER / 2}
+                  y={farEdgeLabelPosition}
                   textAnchor="middle"
                   dominantBaseline="central"
                   data-coordinate-edge="bottom"
@@ -164,7 +168,7 @@ export function GoBoard({
             return (
               <g key={label}>
                 <text
-                  x={-COORDINATE_GUTTER / 2}
+                  x={nearEdgeLabelPosition}
                   y={position}
                   textAnchor="middle"
                   dominantBaseline="central"
@@ -173,7 +177,7 @@ export function GoBoard({
                   {label}
                 </text>
                 <text
-                  x={BOARD_CANVAS_SIZE + COORDINATE_GUTTER / 2}
+                  x={farEdgeLabelPosition}
                   y={position}
                   textAnchor="middle"
                   dominantBaseline="central"
