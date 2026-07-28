@@ -238,6 +238,7 @@ export function studySessionReducer(
         {
           ...session,
           mode: "setup",
+          selectedColor: "black",
           tool: "stone",
         },
         createStudySnapshot(session.size, session.firstColor),

@@ -279,6 +279,21 @@ describe("studySessionReducer", () => {
     ).toBe(empty);
   });
 
+  it("resets the selected setup stone to black when clearing content", () => {
+    const session = apply(
+      createStudySession(),
+      { type: "selected-color-changed", color: "white" },
+      {
+        type: "setup-stones-placed",
+        points: [{ x: 5, y: 5 }],
+        color: "white",
+      },
+      { type: "board-cleared" },
+    );
+
+    expect(session.selectedColor).toBe("black");
+  });
+
   it("changes board size and handles history no-op boundaries", () => {
     let session = apply(
       createStudySession(),

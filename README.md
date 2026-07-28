@@ -51,7 +51,8 @@ position editable, replayable, and easier to use while learning or teaching.
   viewport.
 - **Undo and redo** cover placement, marks, moves, captures, and board clearing.
   In Simulation mode, undo stops at the starting position without undoing
-  Setup work. Clearing the board returns the application to Setup mode.
+  Setup work. Clearing the board returns the application to Setup mode and
+  resets the selected stone to black.
 - **Responsive controls** keep the complete workflow available on desktop and
   mobile.
 - **Shortcut cues** keep keyboard commands visible beside their controls, with

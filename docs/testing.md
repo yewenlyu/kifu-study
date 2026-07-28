@@ -70,7 +70,7 @@ dependency cycles.
 | Navigation | Pan only an oversized board with middle-button drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
 | Navigation | Enforce `U`, `R`, `S`, `X`, `T`, `B`, `N`, and `C`, with no Delete or Backspace removal | `keyboard-shortcuts.test.tsx` |
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
-| Navigation | Clear returns to Setup mode and remains undoable | `history.test.tsx` |
+| Navigation | Clear returns to Setup mode, resets the selected stone to black, and remains undoable | `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | Navigation | Destructive board-size changes confirm, then reset zoom and history | `board-controls.test.tsx` |
 | Help | Keep `S`, `X`, `T`, and `B` badges visible; reveal toolbar `U`, `R`, and `C` badges on hover or keyboard focus | `shortcut-cues.test.tsx`; `shortcut-cues.spec.ts`; `responsive.spec.ts` |
 | Help | Fixed question-mark control opens and dismisses the current shortcut reference | `shortcut-help.test.tsx`; `responsive.spec.ts` |

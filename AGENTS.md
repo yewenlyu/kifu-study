@@ -231,7 +231,8 @@ Maintain strict separation of concerns across test layers:
 - `T` cycles Stone, Triangle, and Circle tools.
 - `B` cycles 9x9, 13x13, and 19x19 boards.
 - `N` toggles board coordinates.
-- Clearing the board, including with `C`, switches to Setup mode.
+- Clearing the board, including with `C`, switches to Setup mode and resets
+  the selected stone to black.
 - Keep shortcuts documented in the README. Show compact, always-visible key
   badges beside the controls for `S`, `X`, `T`, and `B`; reveal the `U`, `R`,
   and `C` toolbar badges on hover or keyboard focus.
