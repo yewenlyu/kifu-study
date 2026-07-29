@@ -12,6 +12,20 @@ Read the implementation before changing behavior. When documentation and code
 disagree, treat the code as current behavior and update the documentation with
 the change.
 
+## Delivery
+
+Kifu Study is a personal project. Unless the user explicitly asks otherwise,
+the goal for every completed change is an end-to-end release:
+
+- Merge directly into `main` without opening a pull request.
+- Push `main` to `origin`.
+- Deploy to production and verify the affected behavior.
+- Clean up branches and worktrees created for the change after confirming they
+  are merged and clean. Preserve unrelated dirty worktrees.
+
+Do not stop after local implementation or handoff when these release steps
+remain.
+
 ## Stack And Commands
 
 - React 19 and TypeScript
