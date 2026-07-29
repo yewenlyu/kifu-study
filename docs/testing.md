@@ -68,6 +68,7 @@ dependency cycles.
 | History | Stop Simulation undo at its starting position without undoing Setup actions | `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | History | Clear redo when a new branch is created | `application/study-session/history.test.ts`; `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | Navigation | Pan only an oversized board with middle-button drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
+| Navigation | Keep application and board viewport dimensions fixed while zoomed board overflow stays internal | `zoom.spec.ts` |
 | Navigation | Enforce `U`, `R`, `S`, `X`, `T`, `B`, `N`, and `C`, with no Delete or Backspace removal | `keyboard-shortcuts.test.tsx` |
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
 | Navigation | Clear returns to Setup mode, resets the selected stone to black, and remains undoable | `application/study-session/reducer.test.ts`; `history.test.tsx` |

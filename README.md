@@ -48,8 +48,8 @@ position editable, replayable, and easier to use while learning or teaching.
   around the board while keeping the default diagram clean.
 - **SVG rendering** keeps the board, stones, grid, and labels sharp at every
   zoom level.
-- **Middle-button panning** moves a zoomed board when it is larger than the
-  viewport.
+- **Contained zoom and panning** keep the application fixed while the enlarged
+  board scrolls inside its viewport; middle-button dragging moves it.
 - **Undo and redo** cover placement, marks, moves, captures, and board clearing.
   In Simulation mode, undo stops at the starting position without undoing
   Setup work. Clearing the board returns the application to Setup mode and
@@ -171,7 +171,7 @@ src/
   styles/       Global and feature-owned responsive styles
   test/         Architecture and component workflow tests
 e2e/
-  *.spec.ts     Playwright drag, panning, and responsive layout tests
+  *.spec.ts     Playwright drag, panning, zoom, and responsive layout tests
   support/      Shared browser fixtures and board helpers
 docs/
   architecture.md  Dependency and state-ownership boundaries

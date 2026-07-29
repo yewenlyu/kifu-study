@@ -52,8 +52,8 @@ before handing off a code change.
   history behavior, and application transitions by owner.
 - `src/test/architecture.test.ts` enforces inward dependency direction and
   rejects source cycles.
-- `e2e/*.spec.ts` separates browser-only drag, panning, and responsive layout
-  contracts; `e2e/support/` contains shared browser helpers.
+- `e2e/*.spec.ts` separates browser-only drag, panning, zoom, and responsive
+  layout contracts; `e2e/support/` contains shared browser helpers.
 - `docs/testing.md` maps product requirements to automated coverage.
 - `docs/architecture.md` documents dependency and state-ownership boundaries.
 - `docs/images/` contains the README product and reference images.
@@ -224,6 +224,8 @@ Maintain strict separation of concerns across test layers:
 
 - Middle-button drag pans only when the board is larger than its viewport.
 - The cursor changes to `grabbing` while middle-button panning is active.
+- Enlarging the board keeps the application and board viewport fixed; overflow
+  stays inside the board viewport.
 - Undo is `U`.
 - Redo is `R`.
 - In Simulation mode, undo stops at the position where Simulation began and

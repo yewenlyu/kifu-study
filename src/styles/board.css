@@ -94,6 +94,9 @@
 }
 
 .board-stage {
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 856px;
   min-height: 0;
   flex: 1;
   overflow: auto;
