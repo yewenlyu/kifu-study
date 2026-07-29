@@ -216,6 +216,8 @@ Maintain strict separation of concerns across test layers:
 - White stone outlines use the same stroke weight as interior grid lines.
 - Triangle and circle marks must maintain visible contrast on black stones,
   white stones, and empty intersections.
+- Circle marks on empty intersections use an opaque white fill so grid lines
+  do not show through them.
 - The board stays SVG-based and must remain sharp at every zoom level.
 
 ### Navigation And History

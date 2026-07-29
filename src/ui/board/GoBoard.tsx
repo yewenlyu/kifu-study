@@ -87,6 +87,7 @@ export function GoBoard({
     y: number,
     color: string,
     scale = 1,
+    circleFill = "none",
   ) => {
     const radius = stoneRadius * 0.48 * scale;
     if (mark === "circle") {
@@ -95,7 +96,7 @@ export function GoBoard({
           cx={x}
           cy={y}
           r={radius}
-          fill="none"
+          fill={circleFill}
           stroke={color}
           strokeWidth={Math.max(2.2, step * 0.065)}
         />
@@ -309,6 +310,8 @@ export function GoBoard({
                 coordinate(x),
                 coordinate(y),
                 "#111111",
+                1,
+                "#ffffff",
               )}
             </g>
           );

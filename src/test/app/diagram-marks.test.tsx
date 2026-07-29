@@ -9,6 +9,17 @@ import {
 import { renderApp } from "./support/render";
 
 describe("diagram marks", () => {
+  it("renders an opaque circle marker on an empty point", () => {
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Circle label" }));
+    clickPoint({ x: 2, y: 0 });
+
+    const circle = markAt({ x: 2, y: 0 })?.querySelector("circle");
+    expect(circle?.getAttribute("fill")).toBe("#ffffff");
+    expect(circle?.getAttribute("stroke")).toBe("#111111");
+  });
+
   it("toggles both mark types with contrast on black, white, and empty points", () => {
     renderApp();
     placeSetupStone({ x: 0, y: 0 });

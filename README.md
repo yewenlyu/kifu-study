@@ -41,7 +41,8 @@ position editable, replayable, and easier to use while learning or teaching.
 - **Automatic move numbers** preserve the played sequence directly on the
   stones.
 - **Diagram marks** add triangles or circles with contrast-aware colors on
-  black stones, white stones, or empty intersections.
+  black stones, white stones, or empty intersections. Circles on empty
+  intersections use an opaque fill so grid lines do not show through.
 - **Three board sizes** support 9x9, 13x13, and 19x19 study.
 - **Optional coordinates** add conventional Go column letters and row numbers
   around the board while keeping the default diagram clean.
