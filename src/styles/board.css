@@ -4,7 +4,6 @@
 }
 
 .board-frame {
-  min-height: calc(100vh - 116px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -180,9 +179,6 @@
     padding: 16px;
   }
 
-  .board-frame {
-    min-height: auto;
-  }
 }
 
 @media (max-width: 620px) {

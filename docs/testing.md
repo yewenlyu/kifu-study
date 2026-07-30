@@ -69,6 +69,7 @@ dependency cycles.
 | History | Clear redo when a new branch is created | `application/study-session/history.test.ts`; `application/study-session/reducer.test.ts`; `history.test.tsx` |
 | Navigation | Pan only an oversized board with middle-button drag and show `grabbing` | `panning.test.tsx`; `panning.spec.ts` |
 | Navigation | Keep application and board viewport dimensions fixed while zoomed board overflow stays internal | `zoom.spec.ts` |
+| Navigation | Keep the compact status bar attached to the board viewport without trailing frame space | `status-bar.spec.ts` |
 | Navigation | Enforce `U`, `R`, `S`, `X`, `T`, `B`, `N`, and `C`, with no Delete or Backspace removal | `keyboard-shortcuts.test.tsx` |
 | Navigation | Ignore shortcuts in editable fields or with modifiers/repeat | `keyboard-shortcuts.test.tsx` |
 | Navigation | Clear returns to Setup mode, resets the selected stone to black, and remains undoable | `application/study-session/reducer.test.ts`; `history.test.tsx` |
