@@ -155,8 +155,10 @@ an inward type merely to avoid a valid dependency.
 
 ## Test Requirements
 
-For every code change, invoke and follow the
-`superpowers:test-driven-development` skill before editing code.
+For every code change, follow test-driven development: write or update a
+focused test first, confirm that it fails for the expected reason, implement
+the smallest change that makes it pass, then refactor while keeping the tests
+green.
 
 Every implemented feature requirement in this file must be traceable to
 automated tests. A feature change is incomplete unless:
