@@ -1,9 +1,12 @@
 .board-area {
+  height: calc(100vh - 68px);
+  height: calc(100dvh - 68px);
   min-width: 0;
   padding: 24px;
 }
 
 .board-frame {
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -95,8 +98,9 @@
 .board-stage {
   width: 100%;
   aspect-ratio: 1;
-  max-height: 856px;
   min-height: 0;
+  display: grid;
+  align-items: safe center;
   flex: 1;
   overflow: auto;
   padding: 18px;
@@ -176,9 +180,13 @@
 
 @media (max-width: 860px) {
   .board-area {
+    height: auto;
     padding: 16px;
   }
 
+  .board-frame {
+    height: auto;
+  }
 }
 
 @media (max-width: 620px) {

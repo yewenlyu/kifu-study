@@ -2,7 +2,7 @@ import { expect, test } from "./support/fixtures";
 
 test.use({ viewport: { width: 1440, height: 1600 } });
 
-test("keeps the compact status bar attached to the board viewport", async ({
+test("fills the desktop work surface and keeps the status bar attached", async ({
   page,
 }) => {
   await page.goto("/");
@@ -19,12 +19,22 @@ test("keeps the compact status bar attached to the board viewport", async ({
     };
 
     return {
+      board: bounds(".go-board"),
       footer: bounds(".board-footer"),
       frame: bounds(".board-frame"),
       stage: bounds(".board-stage"),
+      viewportBottom: window.innerHeight,
     };
   });
 
+  expect(layout.viewportBottom - layout.frame.bottom).toBe(24);
+  expect(
+    Math.abs(
+      layout.board.top -
+        layout.stage.top -
+        (layout.stage.bottom - layout.board.bottom),
+    ),
+  ).toBeLessThanOrEqual(1);
   expect(layout.footer.height).toBe(36);
   expect(Math.abs(layout.footer.top - layout.stage.bottom)).toBeLessThanOrEqual(
     1,
