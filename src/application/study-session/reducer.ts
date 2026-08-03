@@ -5,6 +5,7 @@ import {
   playMove,
   removePoint,
   toggleMark,
+  type Board,
   type BoardSize,
   type Point,
   type StoneColor,
@@ -23,6 +24,12 @@ import {
   type StudySession,
   type Tool,
 } from "./model";
+
+const MOVE_REJECTION_NOTICES = {
+  occupied: "That intersection is occupied.",
+  "self-capture": "Self-capture is not allowed.",
+  ko: "Simple ko does not allow an immediate recapture.",
+} as const;
 
 export type StudyAction =
   | { type: "point-clicked"; point: Point }
@@ -53,6 +60,24 @@ function commit(
   };
 }
 
+function findKoPosition(session: StudySession): Board | undefined {
+  const previousMoveNumber =
+    session.history.present.nextMoveNumber - 1;
+
+  for (
+    let index = session.history.past.length - 1;
+    index >= session.simulationHistoryStart;
+    index -= 1
+  ) {
+    const snapshot = session.history.past[index];
+    if (snapshot.nextMoveNumber === previousMoveNumber) {
+      return snapshot.board;
+    }
+  }
+
+  return undefined;
+}
+
 function handlePointClick(
   session: StudySession,
   point: Point,
@@ -75,15 +100,13 @@ function handlePointClick(
     point,
     present.nextColor,
     present.nextMoveNumber,
+    findKoPosition(session),
   );
 
   if (!result.ok) {
     return {
       ...session,
-      notice:
-        result.reason === "occupied"
-          ? "That intersection is occupied."
-          : "Self-capture is not allowed.",
+      notice: MOVE_REJECTION_NOTICES[result.reason],
     };
   }
 

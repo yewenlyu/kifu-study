@@ -92,6 +92,40 @@ describe("simulation mode", () => {
     );
   });
 
+  it("rejects an immediate ko recapture even after adding a mark", () => {
+    renderApp();
+    for (const point of [
+      { x: 0, y: 1 },
+      { x: 1, y: 0 },
+      { x: 2, y: 1 },
+    ]) {
+      placeSetupStone(point);
+    }
+    fireEvent.click(screen.getByRole("button", { name: "White" }));
+    for (const point of [
+      { x: 1, y: 1 },
+      { x: 0, y: 2 },
+      { x: 2, y: 2 },
+      { x: 1, y: 3 },
+    ]) {
+      placeSetupStone(point);
+    }
+
+    fireEvent.click(screen.getByRole("button", { name: "Simulation" }));
+    clickPoint({ x: 1, y: 2 });
+    fireEvent.click(screen.getByRole("button", { name: "Circle label" }));
+    clickPoint({ x: 4, y: 4 });
+    fireEvent.click(screen.getByRole("button", { name: "Place stones" }));
+    clickPoint({ x: 1, y: 1 });
+
+    expect(stoneAt({ x: 1, y: 1 })).toBeNull();
+    expect(stoneAt({ x: 1, y: 2 })?.dataset.stone).toBe("black");
+    expect(screen.getByRole("status").textContent).toBe(
+      "Simple ko does not allow an immediate recapture.",
+    );
+    expect(screen.getByText(/to play · Move 2/)).toBeTruthy();
+  });
+
   it("captures connected groups and restores captures through undo and redo", () => {
     renderApp();
     fireEvent.click(screen.getByRole("button", { name: "White" }));

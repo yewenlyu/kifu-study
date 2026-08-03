@@ -219,6 +219,61 @@ describe("studySessionReducer", () => {
     expect(session.history.past).toHaveLength(setup.history.past.length);
   });
 
+  it("rejects only immediate ko repetition without committing history", () => {
+    const setup = apply(
+      createStudySession(),
+      {
+        type: "setup-stones-placed",
+        points: [
+          { x: 0, y: 1 },
+          { x: 1, y: 0 },
+          { x: 2, y: 1 },
+        ],
+        color: "black",
+      },
+      {
+        type: "setup-stones-placed",
+        points: [
+          { x: 1, y: 1 },
+          { x: 0, y: 2 },
+          { x: 2, y: 2 },
+          { x: 1, y: 3 },
+        ],
+        color: "white",
+      },
+      { type: "mode-changed", mode: "simulation" },
+      { type: "point-clicked", point: { x: 1, y: 2 } },
+      { type: "tool-changed", tool: "triangle" },
+      { type: "point-clicked", point: { x: 4, y: 4 } },
+      { type: "tool-changed", tool: "stone" },
+    );
+
+    const rejected = studySessionReducer(setup, {
+      type: "point-clicked",
+      point: { x: 1, y: 1 },
+    });
+
+    expect(rejected.notice).toBe(
+      "Simple ko does not allow an immediate recapture.",
+    );
+    expect(rejected.history).toBe(setup.history);
+    expect(rejected.history.present.board[1][1].stone).toBeNull();
+    expect(rejected.history.present.board[2][1].stone).toBe("black");
+    expect(rejected.history.present.nextMoveNumber).toBe(2);
+
+    const afterExchange = apply(
+      setup,
+      { type: "point-clicked", point: { x: 5, y: 5 } },
+      { type: "point-clicked", point: { x: 6, y: 5 } },
+      { type: "point-clicked", point: { x: 1, y: 1 } },
+    );
+
+    expect(afterExchange.notice).toBe("");
+    expect(afterExchange.history.present.board[1][1].stone).toBe("white");
+    expect(afterExchange.history.present.board[2][1].stone).toBeNull();
+    expect(afterExchange.history.present.nextMoveNumber).toBe(5);
+  });
+
   it("updates first-player history and resets mode-specific state", () => {
     const point = { x: 1, y: 1 };
     let session = apply(
