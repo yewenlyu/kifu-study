@@ -57,6 +57,7 @@ dependency cycles.
 | Simulation | Right-click clears only triangle or circle labels and preserves numbered stones | `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx`; `remove-action.spec.ts` |
 | Simulation | Capture complete single, connected, and adjacent groups | `domain/go/rules.test.ts`; `simulation-mode.test.tsx` |
 | Simulation | Reject occupied moves and self-capture without advancing history | `domain/go/rules.test.ts`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx` |
+| Simulation | Reject immediate simple-ko repetition despite intervening marks, while allowing recapture after another exchange | `domain/go/rules.test.ts`; `application/study-session/reducer.test.ts`; `simulation-mode.test.tsx` |
 | Simulation | Clear captured stones' move numbers and labels, and update capture counts | `domain/go/rules.test.ts`; `simulation-mode.test.tsx` |
 | Board | Support 9x9, 13x13, and 19x19 grids and star points | `domain/go/model.test.ts`; `board-rendering.test.tsx` |
 | Board | Keep all four outer grid corners visibly joined | `board-rendering.test.tsx` |

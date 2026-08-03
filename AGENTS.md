@@ -216,10 +216,12 @@ Maintain strict separation of concerns across test layers:
 - Captures remove complete connected groups together with their move numbers
   and triangle or circle marks.
 - Self-capture is forbidden.
+- Simple ko forbids an immediate recapture that would recreate the position
+  from before the opponent's previous move.
 - Move numbers remain attached to stones while they are on the board.
 - Right-clicking an intersection clears its triangle or circle mark through
   the normal undoable history. It never removes a stone or move number.
-- Ko, pass moves, scoring, SGF, and saved variations are not implemented.
+- Superko, pass moves, scoring, SGF, and saved variations are not implemented.
 
 ### Board And Labels
 

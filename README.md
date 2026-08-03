@@ -35,9 +35,9 @@ position editable, replayable, and easier to use while learning or teaching.
   intersection cancels the drag. Right-click an intersection to clear its
   stone and triangle or circle label.
 - **Simulation mode** alternates turns from a chosen starting color, captures
-  groups with no liberties, and rejects self-capture. Right-click removes only
-  a triangle or circle label; the numbered stone remains. Captured stones
-  remove their move numbers and labels with them.
+  groups with no liberties, rejects self-capture, and enforces simple ko.
+  Right-click removes only a triangle or circle label; the numbered stone
+  remains. Captured stones remove their move numbers and labels with them.
 - **Automatic move numbers** preserve the played sequence directly on the
   stones.
 - **Diagram marks** add triangles or circles with contrast-aware colors on
@@ -148,11 +148,12 @@ Implemented:
 - Group liberty calculation
 - Single-stone and multi-stone captures
 - Self-capture prevention
+- Simple ko
 - Capture counts
 
 Not implemented yet:
 
-- Ko and superko
+- Superko
 - Pass moves and game completion
 - Territory scoring
 - SGF import or export
@@ -186,6 +187,6 @@ architecture test enforces this direction and rejects cycles. See
 ## Roadmap
 
 - Import and export SGF records
-- Add ko, pass moves, and scoring
+- Add pass moves and scoring
 - Save named positions and variation branches
 - Package the web application as an Electron desktop app
