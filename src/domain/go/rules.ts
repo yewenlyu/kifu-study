@@ -8,7 +8,7 @@ import {
 
 export type MoveResult =
   | { ok: true; board: Board; captured: number }
-  | { ok: false; reason: "occupied" | "self-capture" };
+  | { ok: false; reason: "occupied" | "self-capture" | "ko" };
 
 function pointKey({ x, y }: Point): string {
   return `${x}:${y}`;
@@ -64,11 +64,23 @@ function collectGroup(board: Board, start: Point): {
   return { stones, liberties };
 }
 
+function hasSameStonePosition(left: Board, right: Board): boolean {
+  return (
+    left.length === right.length &&
+    left.every(
+      (row, y) =>
+        row.length === right[y].length &&
+        row.every((cell, x) => cell.stone === right[y][x].stone),
+    )
+  );
+}
+
 export function playMove(
   board: Board,
   point: Point,
   color: StoneColor,
   moveNumber: number,
+  koPosition?: Board,
 ): MoveResult {
   if (board[point.y][point.x].stone !== null) {
     return { ok: false, reason: "occupied" };
@@ -113,6 +125,10 @@ export function playMove(
 
   if (collectGroup(nextBoard, point).liberties.size === 0) {
     return { ok: false, reason: "self-capture" };
+  }
+
+  if (koPosition && hasSameStonePosition(nextBoard, koPosition)) {
+    return { ok: false, reason: "ko" };
   }
 
   return { ok: true, board: nextBoard, captured };

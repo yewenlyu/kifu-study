@@ -164,6 +164,100 @@ describe("playMove", () => {
     }
   });
 
+  it("rejects an immediate ko recapture based only on stone positions", () => {
+    const koPosition = boardWith([
+      [{ x: 0, y: 1 }, "black"],
+      [{ x: 1, y: 0 }, "black"],
+      [{ x: 2, y: 1 }, "black"],
+      [{ x: 1, y: 1 }, "white"],
+      [{ x: 0, y: 2 }, "white"],
+      [{ x: 2, y: 2 }, "white"],
+      [{ x: 1, y: 3 }, "white"],
+    ]);
+    koPosition[1][1].moveNumber = 42;
+    koPosition[1][1].mark = "circle";
+
+    const capture = playMove(
+      koPosition,
+      { x: 1, y: 2 },
+      "black",
+      1,
+    );
+    expect(capture.ok).toBe(true);
+    if (!capture.ok) {
+      return;
+    }
+
+    expect(
+      playMove(
+        capture.board,
+        { x: 1, y: 1 },
+        "white",
+        2,
+        koPosition,
+      ),
+    ).toEqual({ ok: false, reason: "ko" });
+  });
+
+  it("allows a ko recapture after an intervening exchange", () => {
+    const koPosition = boardWith([
+      [{ x: 0, y: 1 }, "black"],
+      [{ x: 1, y: 0 }, "black"],
+      [{ x: 2, y: 1 }, "black"],
+      [{ x: 1, y: 1 }, "white"],
+      [{ x: 0, y: 2 }, "white"],
+      [{ x: 2, y: 2 }, "white"],
+      [{ x: 1, y: 3 }, "white"],
+    ]);
+    const capture = playMove(
+      koPosition,
+      { x: 1, y: 2 },
+      "black",
+      1,
+    );
+    expect(capture.ok).toBe(true);
+    if (!capture.ok) {
+      return;
+    }
+
+    const threat = playMove(
+      capture.board,
+      { x: 5, y: 5 },
+      "white",
+      2,
+      koPosition,
+    );
+    expect(threat.ok).toBe(true);
+    if (!threat.ok) {
+      return;
+    }
+
+    const response = playMove(
+      threat.board,
+      { x: 6, y: 5 },
+      "black",
+      3,
+      capture.board,
+    );
+    expect(response.ok).toBe(true);
+    if (!response.ok) {
+      return;
+    }
+
+    const recapture = playMove(
+      response.board,
+      { x: 1, y: 1 },
+      "white",
+      4,
+      threat.board,
+    );
+    expect(recapture.ok).toBe(true);
+    if (recapture.ok) {
+      expect(recapture.board[1][1].stone).toBe("white");
+      expect(recapture.board[2][1].stone).toBeNull();
+    }
+  });
+
   it("rejects occupied intersections without mutating the board", () => {
     const board = boardWith([[{ x: 3, y: 3 }, "white"]]);
 
