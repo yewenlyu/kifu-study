@@ -244,6 +244,8 @@ Maintain strict separation of concerns across test layers:
 - The cursor changes to `grabbing` while middle-button panning is active.
 - Enlarging the board keeps the application and board viewport fixed; overflow
   stays inside the board viewport.
+- On desktop, the board frame fills the visible workspace down to its 24px
+  outer inset.
 - The compact status bar follows the board viewport immediately, and the board
   frame ends with the status bar without trailing empty space.
 - Undo is `U`.
